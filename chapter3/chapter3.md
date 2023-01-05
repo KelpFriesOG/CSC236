@@ -475,6 +475,9 @@ Pseudocode:
             // Move the nth ring from starting peg to ending peg
             System.out.println("Move ring " + n + " from peg " + startPeg + " to peg " + endPeg);
 
+            // Move n-1 rings from the auxillary peg to ending peg.
+            doTowers(n - 1, auxPeg, startPeg, endPeg);
+
         }
 
     }
@@ -550,5 +553,278 @@ I have included the TSquare class if you would like to try drawing this shape (m
 
 ## Removing Recursion
 
+- This section considers two general techniques that are often use dto repolace recursion: eliminating tail recursion and direct use of a stack. 
+- Understanding how recursion works allows us to better understand their non-recursive counterparts.
+
+### How Recursion Works
+
+A compiler turns a HLL (high level language) program into machine code and has two primary functions.
+1. Reserve space for the program variables.
+2. Translate the high-level executable statements into equivalent machine language statements.
+
+- The compiler performs these tasks modularly for separate program subunits.
+
+Lets use an example and analyze it:
+
+    public class Kids{
+
+        private static int countKids(int girlCount, int boyCount){
+            
+            int totalKids;
+            totalKids = girlCount + boyCount;
+            return(totalKids);
+
+        }
+
+        public static void main(String[] args){
+
+            int numGirls;
+            int numBoys;
+            int numChildren;
+
+            numGirls = 12;
+            numBoys = 13;
+            numChildren = countKids(numGirls, numBoys);
+
+            System.out.println("Number of children is " + numChildren);
+
+        }
+
+    }
+
+A compiler could create two separate machine code units
+- One for the countKids method and one for the main method.
+- Each unit includes space for its variables plus the sequence of machine language statement that implement its high level code.
+
+Flow of our program:
+- main --> countKids --> main
+
+Machine code might be arranged like this:
+
+    1. space for the main method variables
+    2. main method code that initializes variables
+    3. jump to the countKids method
+    4. main method code that prints information
+    5. exit
+    6. space for the countKids method parameters and local variables
+    7. the countKids method code
+    8. return to the main program
+
+**Static allocation like this is the simplest approach possible. But it does not support recursion.**
+
+- The space for the countKids method is assigned to it at compile time. This simplification works if we assume that the countKids method is called once and then returns, **but it does not account for recursive calls that would require more memory to be allocated after the first call.**
+- Where would the subsequent calls find space for their parameters and local variables? **You cannot allocate this space statically at compile time, because we DO NOT KNOW the NUMBER OF CALLS that will be made at compile time.**
+- **A language that only supports static storage allocation cannot support recursion.**
+
+**Dynamic storage allocation provides memory space for a method after its called.** **Local variables are not asccoiated with actual memory addresses until runtime.**
+
+- The **activation record or stack frame** is the space in which a method's parameters, local variables and return address is stored when it is called.
+
+- Each call to a method, including recursive calls, causes the Java run-time system to allocate additional memory space for a new activation record.
+- Within the method, references to parameters and local variables use values in the record.
+- When the method ends, the activation record space is released.
+
+You can think of activation records as a stack of cards.
+
+Suppose the main method calls proc1, and within proc1 another method, proc2, is called.
+
+- The **system or run-time stack** is the structure that keeps track of activation records at run-time.
+
+Illustration:
+
+![alt text](ActivationRecordStack.png "Title")
+
+As proc2 finishes, its activation record is released. Then proc1's record becomes the active one. The active record follows the LIFO rule. **The last method executed is the first method to finish its complete activation.**
+
+When a method is invoked, its activation record is pushed onto the run-time stack.
+- **Each nested recursive call adds one more record to the stack. If a method calls itself n times, then n+1 of that method's activation records appear on the runtime stack.**
+- The number of these calls is known as the **depth of recursion**.
+
+---
+
+### Tail Call Elimination
+
+What if a recursive call is the last action executed in a recursive method?
+- The recursive call enables the activation record to be put on the runtime stack. When the call finishes executing, the run-time stack is popped and the previous values of the variables are restored.
+- However since the recursive method was the last statement in the method, there is nothing more to execute and the method terminates without using the restored local values.
+- We do not need recursion in this situation and we can eliminate this last "tail call"
+- **Cases in which the recursive call is the last statement executed are called tail recursion.**
+- Tail-recursion can always be replaced with iteration.
+
+Suppose the factorial method:
+
+    public static int factorial(int n){
+        if (n == 0){
+            return 1;
+        } else{
+            return n * factorial(n-1);
+        }
+    }
+
+How do we tranform this tail recursive implementation to an iterative implementation?
+
+- The first hint is the base case. This is what the value of some instance variable should start as.
+- Intermeadiary values would be added to this variable via a for loop. 
+- **retValue will be initialized to 1 based on the base case.**
+- This would ensure that the iterative solution works correctly even if the loop is not initially entered.
+- Each iteration of the while loop should correspond with the actions of one recursive call.
+- Here we will multiply our immediate value, retValue, by the current value of n.
+- **The value of n was decremented by 1 for each recursive call, which means we need to do the same decrementing for each iteration of the while loop.**
+- The while loop represents our only recursive case, meaning that the program should remain in the loop until the base case is met. **Therefore the condition for the loop is the inverse of the base case, n != 0. With this case the loop continues executing until we hit the base case n == 0.**
+
+private static int factorial(int n){
+
+    int retValue = 1;
+
+    while(n != 0){
+        retValue = retValue * n;
+        n = n - 1;
+    }
+
+    return retValue;
+
+}
+
+--- 
+
+### Direct Use of a Stack
+
+If the recursive call is not the last action executed in a recursive method, utilzing a simple loop substitute is not enough!
+
+Ex:
+
+    void recRevPrintList(LLNode<String> listRef){
+        // Prints the contents of the listRef to standard output in reverse order.
+
+        if(listRef != null){
+            recRevPrintList(listRef.getLink());
+            System.out.println(listRef.getInfo());
+        }
+
+    }
+
+In situations such as this, the recursive call is not the last action which executes. **Here we can utilize a stack to obtain intermeadiate values that replace the stacking activation records that build up due to recursion.**
+
+- We can traverse the list in a forward direction and put each element on the stack. After pushing all elements onto the stack, we can pop elements from the stack to print them out in reverse order!
+
+Ex:
+
+    void iterRevPrintList(LLNode<String> listRef){
+
+        StackInterface<String> stack = new LinkedStack<String>();
+
+        // Push each element into the stack
+        while(listRef != null){
+            stack.push(listRef.getInfo());
+            listRef = listRef.getLink();
+        }
+
+        // Read and pop elements from the top of the stack
+        // until stack is empty.
+        while(!stack.isEmpty){
+            System.out.println(stack.top());
+            stack.pop();
+        }
+
+    }
+
+    Note that the iterative implementation uses a programmer provided stack and requires significantly more code than its recursive counterpart.
+
+- **The elegance of recursion is that it uses a stack implicitly and invisibly supplied by the system in the form of the activation record stack.**
+
+---
+
 ## When to use a Recursive Solution
 
+### Recursion Overhead
+
+- A recursive solution to a problem is often more time and space costly than its iterative counterpart. (This is not always true but it is a rule of thumb).
+
+A recursive solution requires **more processing time** to create and destroy activation records and requires **additional space to allocate to the runtime stack** which holds the activation records from prior calls. **All of this is considered time and space overhead.**
+
+- The recursive implementation of the factorial method requires n + 1 method calls and pushes n+1 activation records onto the runtime stack for a value n.
+- The **depth of recursion is O(n)**.
+- **Creating and removing these records requires more time than a typical while loop and a single iterative call.**
+- **Furthermore, the system may run into stack overflow (run out of memory) if too many nested calls are made due to a large initial value of n.**
+
+---
+
+### Inefficent Algorithms
+
+A particular recursive solution may just be inherently inefficent. This may not be due to our implementation but rather reflects the poor quality of the algorithm itself.
+
+Ex: Combinations
+
+- Consider the problem of determining how many combinations of a certain size can be made out of a group of items. For instance, if we have a group of 20 students and want to get a subgroup of 5 members how many different, unique, subgroups are possible.
+
+A mathematical recursive definition exists:
+
+![alt text](RecCombinations.png "Title")
+
+- If you only want a **subgroup of a single person then you can have n possible groups where n is the number of people in the group.**
+
+- If you want to make **a subgroup which has the same size as the total number of people** in the original group, then well you only have **one possible subgroup**!
+
+- **If none of these base cases are met then we use a recursive case.**
+
+**C(g, m) = C(g-1, m-1)+C(g-1, m)**
+
+Pseudocode:
+
+    public static int combinations(int group, int members){
+
+        if(members == 1){
+            return group;
+        }
+        else if(members == group){
+            return 1;
+        }
+        else{
+            return combinations(group-1, members-1) + combinations(group-1, members);
+        }
+
+    }
+
+
+Here is how the call for combinations(4, 3) would break down:
+
+**combinations(4,3) = combinations(3, 2) + combinations(3, 3)**
+
+We can further break down combinations(3,2)
+
+- **combinations(3,2) = combinations(2,1) + combinations(2,2)**
+
+Therefore:
+
+**combinations(4,3) = combinations(2, 1) + combinations(2, 2) + combinations(3, 3)**
+
+- **Each of these components is a base case so we can fully simply the final answer.**
+
+combinations(4, 3) = 2 + 1 + 1 = **4**
+
+Although this solution seems elegant for smaller problems, recursive solutions are often very inefficent because the number of recursive calls grows very quickly (not optimal time complexity).
+
+Suppose the breakdown of combinations(6, 4)
+
+![alt text](RecCombinations2.png "Title")
+
+**There are a total of 19 recursive calls here as opposed to the 4 recursive calls requires to calculate combinations(4, 3).**
+
+- If you look at the image you can see that a lot of values such as combinations(3,2) are calculated multiple times.
+- combinations(4, 3) is calculated twice, and combinations(3, 2) is calculated three times as are combinations(2, 1) and combinations(2, 2).
+  
+- Later on we will learn about **dynamic programming**. This is a programming approach which **saves solutions to subproblems inside a separate data-stucture to avoid reculating the same subproblem multiple times.**
+- **Of course the best scenario would be an iterative solution.**
+
+For combinations there is an iterative solution!
+
+C(g, m) = g!/(m! * (group - members)!)
+
+A properly implemented iterative solution based on this formula is much more efficent than the recursive alternatives.
+
+### Clarity
+
+- For many problems a recursive solution is the most elegant and natural solution. Recursive programming limits the view of the programmer to the *tip of the iceberg* or just the surface level of the process.
+- The activation records and internal stack take care of most of the underlying work!
+
+**As computers get faster, have more memory, and become cheaper it is worthwhile to consider recursion to hide the true complexity of the program and the details of implementation.**

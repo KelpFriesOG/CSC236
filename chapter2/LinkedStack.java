@@ -12,7 +12,7 @@ public class LinkedStack<T> implements StackInterface<T> {
     }
 
     @Override
-    public void push(T element) throws StackOverflowException {
+    public void push(T element) {
         LLNode<T> newNode = new LLNode<T>(element);
         newNode.setLink(top);
         top = newNode;
