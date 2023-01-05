@@ -17,11 +17,11 @@ If you want to make and design your own application, then this course is **cruci
 
 ## Why choose Java as opposed to C#, Carbon, Python or other alternatives?
 
-Java is simply the language I chose because my prior classes used it! However the important part is the structures themselves, not what language you code them in. I suggest mastering one language over a few years while learning these concepts. Then, picking up a new language or skill is not as daunting once you know programming concepts that go into any modern language.
+Java is simply the language I chose because my prior classes used it. However the important part is the structures themselves, not what language you code them in. I suggest mastering one language over a few years while learning these concepts. Then, picking up a new language or skill is not as daunting once you know programming concepts that go into any modern language.
 
 - For people planning to major in a field tangential to computer science but not neccesarily fully involved in coding, I would suggest using Python due to its simplistic syntax and versatility.
 - For people who want to get the raw experience of quick, backend languages that are ubiquitous in legacy companies I would suggest trying our C# or C++ and maybe even Carbon (although I don't know much about the latter).
-- For people looking to get a visible and customizable result from their code I reccomend using "front-end" languages like Javascript! Even though we call them front-end, these languages are so much more versatile than they once were!
+- For people looking to get a visible and customizable result from their code I reccomend using "front-end" languages like Javascript. Even though we call them front-end, these languages are so much more versatile than they once were!
 
 I chose Java because it offers a good balance of being both annoying enough to the point where it forces you to develop best practices for your code, while also remaining abstract enough to easily support many use cases outside of boring programming tasks without being overwhelming for new developers. For example you could utilize libraries to visualize these algorithms or structures, use built in libraries to draw images such as fractals that utilize recursion, and so much more!
 
@@ -34,6 +34,6 @@ I chose Java because it offers a good balance of being both annoying enough to t
 
 If you get tired, bored, or otherwise burnt out, just remember that you can quite literally code **anything** your heart desires with a little googling and patience. Make something for yourself or for someone else, learn by creating code you actually find useful and try out anything that sparks your interest no matter how simple, goofy, or irrelevant it might seem.
 
-- After all you want to be able to code for your own happiness and self satisfaction, not just to fulfill your employeers! If not that, then what the hell is even the point?
+- After all you want to be able to code for your own happiness and self satisfaction, not just to fulfill your employeers. If not that, then what the hell is even the point?
 
-Good luck and happy coding! Feel free to raise issues if anything I have is incorrect or if you have specific questions!
+Good luck and happy coding! Feel free to raise issues if anything I have is incorrect or if you have specific questions.
