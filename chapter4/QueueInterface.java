@@ -1,4 +1,5 @@
 package chapter4;
+
 public interface QueueInterface<T> {
 
     void enqueue(T element) throws QueueOverflowException;
