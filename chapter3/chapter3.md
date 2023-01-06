@@ -822,6 +822,8 @@ C(g, m) = g!/(m! * (group - members)!)
 
 A properly implemented iterative solution based on this formula is much more efficent than the recursive alternatives.
 
+---
+
 ### Clarity
 
 - For many problems a recursive solution is the most elegant and natural solution. Recursive programming limits the view of the programmer to the *tip of the iceberg* or just the surface level of the process.
