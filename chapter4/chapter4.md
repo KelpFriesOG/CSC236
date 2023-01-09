@@ -228,15 +228,89 @@ Pseudocode for a potential test driver (my test driver is not this complicated a
 
 ### A Test Driver for the ArrayBoundedQueue Class
 
+- Check the ArrayBoundedQueueITD class!
+
 ---
 
 ## Link-Based Queue Implementations
 
+In a linked based queue we use references to two nodes to keep track of the front and rear of the queue.
+- **When the queue is empty, both the front and rear node references should be NULL.** Our implementation of the constructor reflects this.
+
 ### The Enqueue Operation
+
+For the enqueue operation we simply insert elements to the rear of our structure.
+
+- First we create a node for the new element.
+- Then we add the new node at the rear of the array.
+- Then we update the reference of the rear to match our new rear.
+- Lastly we increment the variable that keeps track of the number of elements.
+
+To add the queue to the end of the linked list we can simply setLink on the rear node to the new element.
+- However, **what if the queue is empty when we add the element, should we add the new element to a null reference?**
+- No, **if the queue is empty, this means our rear reference is null. In this case we set our front reference to the newNode instead of linking the rear up to the new element!**
+- Then when we update the rear to be the newElement it will work regardless of whether or not the array in its prior state was empty.
+
+Pseudocode:
+
+    LLNode<T> newNode = new LLNode<T>(element); // Step 1
+    
+    // Step 2
+    if(rear == null){ // If the linked list is empty... (this condition could also be (front == null) )
+        front = newNode;
+    }
+
+    else{
+        rear.setLink(newNode);
+    }
+
+    rear = newNode; // Step 3
+    numElements++;  // Step 4
+
 
 ---
 
 ### The Dequeue Operation
+
+With this operation we not only want to remove a node from the front of the linked list, but also want to return its contents!
+
+- For this operation we need to consider what to do if the node we delete was the only node in the linked list.
+- Furthermore, if the queue is empty, then we should throw an exception to indicate this and proceed no further.
+
+- First thing we should do is record the value in the current front reference.
+
+- We can "delete" the front node by simply saying front = front.getLink(), because this shifts the front index up one step which deallocates the memory utilized by the original front node automatically.
+
+- If the queue is empty after we delete a node, that would be indicated if the front ended up being null. **If the front is null after completing the dequeue operation (which involves saying front = front.getLink), then we also set the rear to null to reset the state of the queue (recall that if front and rear are both null it indicates an empty queue).**
+
+- Don't froget to decrement the variable which keeps track of the number of elements after all this.
+- Also return the contents of the original front reference which you should have recorded as the first step.
+
+Pseudocode:
+
+    if(!isEmpty()){
+        
+        // Recording the original front's information
+        T value;
+        value = front.getInfo();    
+
+        // Dequeing the current front by incrementing the front node reference.
+        front = front.getLink();
+        
+        // If the dequeing leaves the array empty, then we reinforce this fact by setting the rear to null as well.
+        if(front == null){          
+            rear == null;
+        }
+
+        // Regardless we decrement the numElements variable and return the value of the original front node.
+        numElements--;
+        return value;
+
+    } else{
+        throw new QueueUnderflowException("Dequeue attempted on an empty queue!")
+    }
+
+
 
 ---
 
