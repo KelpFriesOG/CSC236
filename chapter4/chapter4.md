@@ -46,7 +46,7 @@ The RepeatStrings example shows how to **use a queue to store strings provided b
 
 - The example code uses an ArrayBoundedQueue which is developed in the next section.
 
-![alt link](ArrayBoundedQueueIMG.png "Title")
+![alt link](ArrayBoundedQueueIMG.PNG "Title")
 
 ---
 
@@ -66,15 +66,15 @@ The RepeatStrings example shows how to **use a queue to store strings provided b
 
 Ex:
 
-![alt link](FixedFrontDesign_1.png "Title")
+![alt link](FixedFrontDesign_1.PNG "Title")
 
 If we want to remove an element, we have to remove from the front of the queue which is always the 0th indexed element.
 
-![alt link](FixedFrontDesign_2.png "Title")
+![alt link](FixedFrontDesign_2.PNG "Title")
 
 Now if set the first slot to null, we are left with a hole in the array. **To fix this we have to shift every subsequent element down one position!** This operation takes a substanial amount of time, especially for larger queues. 
 
-![alt link](FixedFrontDesign_3.png "Title")
+![alt link](FixedFrontDesign_3.PNG "Title")
 - For a queue of 4 elements, removing an element would require you to shift 3 elements down.
 - For a queue of 10000 elements, removing an element would require you to shift 9999 elements down.
 
@@ -144,7 +144,7 @@ Or we could use the modulo approach which just sums both statements
 
 This approach is also called a **wraparound or circular** design.
 
-![alt link](WraparoundDesign.png "Title")
+![alt link](WraparoundDesign.PNG "Title")
 
 - The circular array (floating-front) solution is not as simple to code as the fixed front design. What do we gain by adding complexity to the code?
 
@@ -222,7 +222,7 @@ In the worst case, if we add an element when the array is full, we need to copy 
 
 Pseudocode for a potential test driver (my test driver is not this complicated and far less interactive)!
 
-![alt link](ArrayBoundedQueueTestDriver.png "Title")
+![alt link](ArrayBoundedQueueTestDriver.PNG "Title")
 
 ---
 
