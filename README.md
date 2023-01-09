@@ -7,7 +7,7 @@ The textbook used for notes and exercises in each chapter is:
 
 The contents covered in each chapter is made apparent in the textbook, but generally each chapter is expected to be covered weekly or biweekly in a sequential manner.
 
-## Why is Data Sturctures important?
+## Why is Data Structures important?
 
 Data structures is a subject covered by the second or third year of most BA or BS Computer Science degrees. It is usually one of if not the most difficult course for students to push through in their academic career. Understanding structures such as linked lists, stacks, queues, and trees may not be the most important concepts when working in most fulltime CS positions, **but their concepts offer students the ability to analyze and understand the mechanics behind complex databases and algorithms behind various applications such as Google's insanely fast search engine**. **Unlike previous courses that teach you core modern programming concepts, this course naturally branches into more complex CS topics and opens up students to the sheer variety and complexity in the world of CS.**
 
