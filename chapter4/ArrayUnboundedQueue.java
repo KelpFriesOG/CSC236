@@ -9,12 +9,14 @@ public class ArrayUnboundedQueue<T> implements QueueInterface<T> {
     protected int front = 0;
     protected int rear;
 
+    @SuppressWarnings("unchecked")
     public ArrayUnboundedQueue() {
         elements = (T[]) new Object[CAPACITY];
         rear = CAPACITY - 1;
         origCap = CAPACITY;
     }
 
+    @SuppressWarnings("unchecked")
     public ArrayUnboundedQueue(int origCap) {
         elements = (T[]) new Object[origCap];
         rear = origCap - 1;
@@ -24,6 +26,7 @@ public class ArrayUnboundedQueue<T> implements QueueInterface<T> {
     // New method for the unbounded queue which is the
     // cornerstone that enlarges the queue and is called
     // whenever the elements array hits max capacity.
+    @SuppressWarnings("unchecked")
     private void enlarge() {
 
         // Creating the larger array
@@ -88,6 +91,22 @@ public class ArrayUnboundedQueue<T> implements QueueInterface<T> {
     public int size() {
         // UNCHANGE from ArrayBoundedQueue class implementation!
         return numElements;
+    }
+
+    @Override
+    public String toString(){
+
+        String response = "[";
+        for(int i = 0; i < numElements-1; i++){
+
+            response += elements[(front + i) % elements.length] + ", ";
+
+        }
+
+        response += elements[rear] + "]";
+
+        return response;
+
     }
 
 }
