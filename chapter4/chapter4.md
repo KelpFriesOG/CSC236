@@ -338,13 +338,48 @@ Try this implementation out yourself or look it up online!
 
 The internal array of an array bounded queue takes up the same amount of memory regardless of the implementation.
 - **A linked queue only allocates and deallocates space based on whether it is needed, therefore it is more space efficent.** However, each node element in a queue is substanially larger than a value in an array, because the node also contains a reference to the another node.
-- 
 
+- For a linked list implementation of a queue, the required space for the references in the queue changes based on the size of the queue.
+
+`Number of required references = 2 + (2* size of queue)`
+
+**Unless the maximum queue size is significantly larger than the average queue size, the difference between the two implementations is negligible.**
+
+- Observer methods are O(1) complexity (ex. isFull, isEmpty and size).
+- For the array implementation, n slots of memory have to allocated via the constructor. The queue constructor here has a O(n) complexity.
+- For the linked list implementation, only one slot of memory has to be created for the root node. The queue constructor in this case has a O(1) complexity.
+
+- Enqueue and dequeue operations can directly access the rear or front of the queue respectively. The work done by these operations are independent of (unaffected by) the queue size. **Both enqueue and dequeue operations have a O(1) complexity regardless of the queue implementation.**
+
+For an ArrayUnboundedQueue we have to consider the cost of increasing the size of the internal array whenever the queue gets filled up.**For the unbounded queue we could start with a smaller initial array (less time involved to allocate memory), and then only if more capacity is needed will more memory be allocated!**
+
+- However, the cost of resizing the array itself is O(n). **This means the cost of adding an array to the element is usually constant but could sometimes involve resizing, bringing up the cost to allocating n spaces in memory. However, the resizing operation is amortized, which is to say that it is not required very often! Therefore, this O(n) cost of resizing is spread thinly through many enqueue operations.**
 ---
 
 ## Application: Palindromes
 
+A queue or a stack can be used to process palindromes.
+- A palindrome is a string that reads the same forwards and backwards (ignoring spacing and punctuation).
+
+Some examples of palindromes:
+-"Eve"
+-"Won ton? Not now!"
+
 ### The Palindrome Class
+
+First we need a method that checks to makes sure the initial given string is a palindrome. This can be implemented as a static method, therefore we don't need a constructor for the class.
+
+- We will call this method "test"
+
+This method will create a stack and a queue! 
+- **The first character popped from the stack will be the last letter (since a stack is a LIFO structure).** 
+- **The first character dequeued from the queue will be the first letter (since a queue is a FIFO structure).**
+
+**We can compare these two characters in a loop until either the stack or queue is empty and if at any point they don't match we have determined that the string as a whole cannot be a palindrome.**
+
+- We can choose to use any implementations of the stack and queue, but since we know the size of the string prior to making the stack and queues it's best to use bounded implementations for space efficency (it should not matter for the purposes of just testing tho).
+
+
 
 ---
 
