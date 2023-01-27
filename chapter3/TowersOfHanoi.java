@@ -1,3 +1,5 @@
+package chapter3;
+
 public class TowersOfHanoi {
 
     public static void doTowers(int n) {

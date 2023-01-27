@@ -1,3 +1,7 @@
+package chapter3;
+
+import chapter2.*;
+
 public class LinkedListMethods {
 
     // #region List Size methods

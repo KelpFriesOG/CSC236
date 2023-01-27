@@ -1,3 +1,5 @@
+package chapter3;
+
 public class BinarySearch {
 
     static int binarySearch(int[] values, int target) {

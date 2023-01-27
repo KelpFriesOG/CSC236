@@ -1,3 +1,5 @@
+package chapter3;
+
 public class Combinations {
 
     public static int combinations(int group, int members) {

@@ -1,3 +1,5 @@
+package chapter2;
+
 public class Balanced {
     protected String openSet;
     protected String closeSet;

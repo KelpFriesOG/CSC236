@@ -1,3 +1,4 @@
+package chapter2;
 
 public class PFixTesting {
     public static void main(String[] args) {
