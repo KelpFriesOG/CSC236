@@ -379,21 +379,46 @@ This method will create a stack and a queue!
 
 - We can choose to use any implementations of the stack and queue, but since we know the size of the string prior to making the stack and queues it's best to use bounded implementations for space efficency (it should not matter for the purposes of just testing tho).
 
-
-
 ---
 
 ### The Applications
+
+There are probably (definitely) better ways to solving the palindrome problem, but this approach utilizes both of the data structures we have learned so far.
+- This application is interesting, easy to code, and intuitive!
+- **We can always use any combination of ADTs and structures to solve a problem, we are not limited to a single object or type!**
 
 ---
 
 ## Queue Variations
 
+Additional operations could be included in the queue definition to create a more versatile data structure.
+- Maybe an operation could allow the user to peek into the front, rear, or certain position of a queue.
+- Or we could expand the access rules to create a structure that could be a generalized version of both a queue and a stack (i.e. a double sided queue).
+
+Important to note!
+- A PriorityQueue ADT is often considered alongside traditional queues.
+- **In this queue, when we call dequeue, the highest PRIORITY element is dequeued as opposed to the element strictly in the front of the queue.**
+- **BIG DIFFERENCE: The order in which elements enter the queue does not decide when the elements will exit the queue.**
+
 ### Exceptional Situations
+
+Rather than throwing exceptions, **we could tweak the queue implementations to deal with special cases (i.e. removing an element from an empty queue, or adding an element to a bounded and filled up queue) by simply nullifying invalid operations.**
+
+- The invalid operations could return null or false if the operations are unsucessful.
+
+In the case of enqueue, the most common case for failure is adding an element to a filled, bounded queue.
+- **But you could also add more restrictions to prevent duplicate elements, or has specific constraints on the elements themselves.**
+- Rather than redefining the operations we could also write new methods that enqueue and dequeue with specific constraints in mind. (i.e. safeEnqueue, safeDequeue).
 
 ---
 
 ### The GlassQueue
+
+The idea of the GlassQueue is to be able to **peek at the front and rear elements of the queue.** This queue supports all the operations of a traditional queue but adds the functionality to peek at either end via the **peekFront and peekRear methods**.
+
+- You may think we need to create a whole new interface to accomplish this, but in fact we can inherit the QueueInterface class to create a more terse definition for a new GlassQueueInterface class. 
+
+- Check the files for the GlassQueueInterface and LinkedGlassQueue classes.
 
 ---
 
