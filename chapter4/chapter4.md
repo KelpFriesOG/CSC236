@@ -316,9 +316,29 @@ Pseudocode:
 
 ### A Circular Linked Queue Design
 
+- A queue is typically implemented with 2 instance variables that denote either end of the queue.
+- However, **we could have one instance variable which referenced the front of the queue we could chain together links to reach the end of the queue.**
+- **The downside is that this change would make insertion into the queue a O(n) operation.**
+
+A circularly linked design would also only have one instance variable, and the link of the rear (last) node would point to the front (first) node.
+- In this implementation, the only instance variable would be to the rear of the queue.
+
+![alt link](CircularQueueDesign.PNG "Title")
+
+We could enqueue into this queue by accessing the rear node directly!
+
+- The enqueue operation would have a constant, O(1), complexity.
+We could dequeue from the queue by accessing rear.getLink() (which is the front of the queue), and saying rear.setLink() = rear.getLink().getLink()
+
+Try this implementation out yourself or look it up online!
+
 ---
 
 ### Comparing Queue Implementations
+
+The internal array of an array bounded queue takes up the same amount of memory regardless of the implementation.
+- **A linked queue only allocates and deallocates space based on whether it is needed, therefore it is more space efficent.** However, each node element in a queue is substanially larger than a value in an array, because the node also contains a reference to the another node.
+- 
 
 ---
 
