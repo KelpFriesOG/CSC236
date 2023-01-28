@@ -564,11 +564,26 @@ We can create a Customer class to model these times (arrival time, service time,
 
 ### The Customer Class
 
+Each Customer object will eventually need to know its arrival, service, and finish times.
 
+- Objects will need to be enqueued and dequeued from queue objects to simulate entering and exiting real world queues.
+
+Class implementation is straightforward.
 
 ---
 
 ### The Simulation
+
+For the simulation we create customers the have arrival times in a particular range. The starting times of the Customers in the line must also fall within an appropriate range.
+
+- We could read these values from a file or we could randomly generate them.
+- The textbook chose to randomly generate them!
+
+The service times can be chosen completely randonly as long as the user has given a min and max start time.
+
+The service time is an amount of time, but the arrival time is a discrete unit of time i.e. the number at which the service time begins.
+
+
 
 ---
 
