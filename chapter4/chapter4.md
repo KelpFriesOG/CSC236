@@ -424,23 +424,147 @@ The idea of the GlassQueue is to be able to **peek at the front and rear element
 
 ### The Double-Ended Queue
 
+**A double-ended queue is a data structure that allows the user to enqueue and dequeue elements from both sides (front and rear) of the queue.**
+
+- We typically shorten **"Double-ended queue" to Deque, which is pronounced as "deck".**
+
+- The operations from a deque are not just additions to a traditional queue but are completely different.
+
+- **Now we could choose have to distinguish between enqueueFront and enqueueRear and similarly with the dequeue operation!**
+
+- **Or the DequeInterface could extend the normal QueueInterface and simply add the enqueueFront and dequeueRear methods**
+
+- I chose the second approach as its less work :)
+
+- Implementations of the array-based and link-based deques are exercises in the book! But you can find the DequeInterface in these files.
+
 ---
 
 ### Doubly Linked Lists
+
+If we try to create a deque with a linked list it is extremely annoying to understand how to implement the dequeueRear operation.
+
+- **A solution could be to base the Linked List implementation of the Queue on a whole different type of node!**
+
+A Doubly Linked List is a list which is created with **nodes that have two pointers / references: one to the next node, another to the previous node.**
+
+- **The textbook uses the terms forward and back but I prefer previous and next.**
+
+A DLLNode will have methods to set and get both the next and previous node references.
+
+We can then create a deque with the doubly-linked nodes which will look like this conceptually:
+
+![alt link](DoublyLinkedDeque.PNG "Title")
+
+In order to dispose of Node D we need to dereference it, in other words remove all references to Node D!
+
+The first step would be shifting up the rear element such that the new rear is the previous node from the old rear.
+
+In other words:
+`rear.getPrev();`
+
+Now rear points to Node C. But we also need to remove the link between Node C and D!
+
+**In other words we can modify the previous step to also set the next node of Node C to null**:
+
+`rear.getPrev().setNext(null)`
+
+Now the link between the nodes C and D are completely severed. **All that is left it to reassign the rear to its own previous node, which will then completely dereference Node D.**
+
+In other words:
+`rear = rear.getPrev();`
+
+**If rear.getPrev() is null prior to starting this algorithm then we know that we are dealing with an empty deque and we should reassert that fact by ensuring both the front and rear references are null.**
+
+This dequeueRear operation has a constant time complexity! No loops are involved. 
+
+- The same operation with standard LLNode nodes would require n steps because we would need to start from the front of the queue to get to the second last node (we would need to traverse n-1 nodes in a loop!).
+
+- However, note that DLLNode object takes up quite a bit more space than a traditional node with a single reference. But with modern machines that have inexpensive and ample storage, this extra space requirement is typically negligible!
 
 ---
 
 ### Java's Collection Framework Queue/Deque
 
+Java's implementation of a queue has two major differences compared to our queues.
+
+- **Elements are not required to be added to the rear of the queue. They can be ordered based on their priority value (i.e. Priority Queue ADT in Chapter 9).**
+- Two operations can be used to enqueue an element: **add() or offer()**. The add() method throws an excetion if invoked on a full queue. The offer() method returns a false value if you attempt to enqueue on a full queue (otherwise it returns true).
+
+Java has 4 classes that implement its own Deque interface: ArrayDeque, ConcurrentLinkedDeque, LinkedBlockingDeque, and LinkedList. (that's correct, the built in LinkedList uses double linked nodes!)
+
+- **By restricting method use the Deque interface could be used to implement a stack (only allow dequeueing and enqueuing from one end), or as a queue (allowing dequeueing and enqueueing from opposite ends).**
+
 ---
 
 ## Application: Average Waiting Time
 
+Queues are used whenever a "customer" entity is waiting to be "serviced".
+- For a CPU: Processes waiting to be processed.
+- For a Printer: Print jobs waiting to be printed.
+- For a restuarant: People waiting to order food.
+
+We want quick response times, print times, and order time, and this can be accomplished by minimizing queue waiting time.
+
+**One solution is to add more queues:**
+- If we have more cores, then processes take less time because they can sort themselves into different queues corresponding with each core.
+- If we have more printers we can print more paper simultaneously.
+- If we have multiple counters we can serve more people at once and over a given time frame.
+
+However there is always some cost involved in adding more queues!
+
+**In the real world we analyze queue waiting times to understand when and if to employ additional queues based on a target time. In other words we need to make a tradeoff depending on the average waiting time to attain our goal or to adjust it based on external constraints (cost involved with employing more queues).**
+
+---
+
 ### Discussion and Examples
+
+Well we can dissect the time spent in the queue into two segments!
+- Ask yourself?: When you get to the front of the queue, do you get served instantaneously? No, there is a service time involved. This may be the amount of time it takes for a process to execute, or the amount of time required to give your order.
+
+Therefore the total or **turnaround time** for each element can be broken down into two parts:
+
+`turnaround_time = waiting_time +  service_time`
+`waiting_time = turnaround_time - service_time`
+
+- The waiting time can be calculated by getting an arrival time, finish time, and service time.
+- The arrival time is the discrete time the task arrives in the queue.
+- The finish time is the disrete time the task finishes its slot in the queue. In other words:
+
+`finish_time = arrival_time + service_time + waiting_time`
+`service_time = finish_time - arrival_time`
+
+How can we get to solving the waiting time based on the arrival time, finish time, and service time?
+
+`waiting_time = finish_time - service_time - arrival_time`
+
+Ex. 
+Assume a simulation where customers order and place their orders into multiple queues.
+
+This could be a tabular representation of when each customer arrives and how long it takes to service the customer:
+![alt link](QueueExample_1.PNG "Title")
+
+And here is the time based scale representation!
+![alt link](QueueExample_2.PNG "Title")
+
+- Note that Customer 2 arrives before Customer 1 finishes, therefore that process is put into a separate queue.
+- However Customer 3 also arrives before either Customer 1 or 2 are finished, so we could add another queue.
+- But what if we only have two queues?
+- In this case, even though the arrival time is 5, Customer 3 can be placed right after Customer 1 finishes in the lower numbered queue.
+
+![alt link](QueueExample_3.PNG "Title")
+
+Now we can observe that although Customer 3 arrive at t=5, their process begins at t=13. Therefore their waiting time is 23-10-5 = 8 seconds.
+
+![alt link](QueueExample_4.PNG "Title")
+
+We can create a Customer class to model these times (arrival time, service time, and finish time).
 
 ---
 
 ### The Customer Class
+
+
 
 ---
 
