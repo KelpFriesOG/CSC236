@@ -6,9 +6,9 @@ public class Customer {
     protected int serviceTime;
     protected int finishTime;
 
-    public Customer(int arrivalTime, int finishTime) {
+    public Customer(int arrivalTime, int serviceTime) {
         this.arrivalTime = arrivalTime;
-        this.finishTime = finishTime;
+        this.serviceTime = serviceTime;
     }
 
     public int getArrivalTime() {

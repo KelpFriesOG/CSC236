@@ -13,7 +13,7 @@ public class LinkedQueue<T> implements QueueInterface<T> {
     }
 
     @Override
-    public void enqueue(T element) throws QueueOverflowException {
+    public void enqueue(T element) {
 
         LLNode<T> newNode = new LLNode<T>(element);
         if (rear == null) {

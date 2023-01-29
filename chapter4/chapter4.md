@@ -583,29 +583,160 @@ The service times can be chosen completely randonly as long as the user has give
 
 The service time is an amount of time, but the arrival time is a discrete unit of time i.e. the number at which the service time begins.
 
+- If there are N queues they are indexed from 0 to N-1
+- We make a simulation object that does the work of main program. This simulation object can be called by a class that solely implements a GUI around the implementation.
+- An array of queues hold customers. The CustomerGenerator object generates a Customer with a particular arrival and service time. **Then our simulation needs to know how to sort the customer into the correct queue.**
 
+- It must put the customer into the smallest queue. We use the size() method of each queue to determine the smallest queue prior to entering the customer in.
+
+**We can determine the finish time as soon as the Customer enters a queue. If the queue is empty, then the finish time is equal to arrival time + service time**
+
+If queue is empty: `finish_time = arrival_time + service_time`
+
+- **If the queue is not empty then the finish time of the current customer is equal to the finish time of the customer at the rear plus the service time.**
+
+If queue is not empty: `finish_time(n) = finish_time(rear) + service_time`
+
+To perform the simulation the program must also	be able	to determine	when the “next”	customer is	ready to leave a queue, and	then remove	and	return that customer.
+
+- **In order to determine the finish times of a customer at the front of the queue, we need to be able to peek at the front of the queue and determine the earliest finish time.**
+
+The core of the simulation will be a while loop that will either add a new customer to the queue or remove a customer from the queue with every run.
+- To determine which one happens we compare the next arrival and departure times.
+
+- So we need something like a GlassQueue.	
+
+Check the Customer, CustomerGenerator, LinkedGlassQueueClass, Simulation, and SimulationITD classes. Debug through them if you don't want to read through the textbook. Otherwise I suggest reading the textbook (pg 265-268)
+
+If you know how, you could implement a GUI on top of the simulation. 
 
 ---
 
 ## Concurrency, Interference, and Synchronization
 
+Multitasking is the ability to perform more than one task at a time.
+
+- Queues enable a computer to multitask. One core can be handling running a game while another can primarily focus on running the OS, and yet another core could be running the audio playback for the game or other background apps.
+  
+- Having smart algorithms that know how to "balance" a load between different queues is a quintessential componenet of any modern computer.
+
+**Concurrent programs: Programs that require code sequences to activate at the same time or concurrently.**
+
+- **These programs may have several pieces of code that intermingle with each other and wait for each other's processes to finish. The statements could be going through a single or multiple distinct processors.**
+
+A few instructions from one sequence then jump to the other and do a few from that sequence and then jump back and so forth. 
+
+With multiple processors we have more support for physical (architectural) support for parallelism. **When programs run, programmers do not need to be concerned with how this parallelism is implemented in order to use it.**
+
+- **The Queue ADT can be used to act as a buffer between producers that create tasks and consumers that handle tasks.**
+
+- Producers generate tasks that get put into a queue and consumers repeatedly remove the tasks from the queue and handle it.
+
+- Queues are shared between multiple producers (programs that create tasks) so there **needs to be some way to make sure that tasks are not handled multiple times or that tasks do not have scheduling conflicts within the same shared queue. This is the heart of concurrent programming.**
+
+Studying concurrency is beyond the scope of the book but the counter class is a very basic class that can be used to create more complex code to study concurrency within Java.
+
 ### The Counter Class
+
+- Check the Counter class and the Demo01 class.
 
 ---
 
 ### Java Threads
 
+Threads are a concurrency mechanism within Java.
+- **Every Java program has a main thread which has the ability to generate additional threads.**
+- **A program terminates when all its threads terminate.**
+- The thread class is in the java.lang package which is automatically imported into all programs.
+
+Classes that implement the runnable interface must have a public run() method. Threads are created by utilizing a runnable object to construct them.
+
+- We can make a counter object, then use the counter object as the parameter of some other object which extends Runnable. Then we can "run" this other object based on its instantiation within the Thread class.
+
+
+Ex.
+
+    Counter c = new Counter();
+    Runnable r - new Foo(c, 10);
+    Thread t = new Thread(r);
+    t.start();
+
+The thread object can be used to execute the run() method of the Foo class by calling the start() method on the thread.
+
+Look at the Increase and Demo02 classes for the example. I will be referring to them from here on.
+
+The run() method in the Increase class allows a thread that utilizes the an Increase object to call this method.
+
+Calling .start() on the thread then calls the run method! 
+
+**Now usually the expected output (10000) is the same as the actual output. But sometimes the actual output is lower!**
+
+- **There is no guarantee that the second thread (which is running the run() method of the Increase object) will finish before the termination of the main thread.**
+
+- **If the main thread finishes before the second thread, then the count that gets printed is less than what it should be, because the second thread has yet to finish!**
+
+How do we fix this unpredictable behavior? 
+
+Well we use the .join method on any tertiary thread (threads other than the main thread) to indicate that the main thread should wait for this thread to complete!
+
+- Examine Demo03.java to see how this is used. 
+
 ---
 
 ### Interference
+
+What if two threads begin to act on the same object and start manipulating the same data?
+
+- Consider Demo04 as I will be referring to it as an example moving forward.
+
+Demo04 runs two separate threads that each increment the same counter object 5000 times.
+
+- The program uses .join() on both threads which should ensure that they both terminate before the main thread terminates and the expected result should thus be 10000.
+
+**However, this is not the case! Usually the actual counter is some value from 5-10 thousand!**
+
+- Why?
+Incrementing a counter requires three steps in Java bytecode: getting the current value, adding one to it, and storing it back as a result.
+
+**Consider the counter is at 12 and both threads increment the counter. If both threads start when the counter is 12, then both threads will reaffirm the result of 13 due to interference! Even if the result should be 14!**
+
+- Both threads are desynced and both get the value of 12 to increment and then store. 
+
+![alt link](Interference.PNG "Title")
+
+Even if threads finish before the main thread, they may still interfere with one another by simultaneously executing on the same piece of data rather than taking turns.
+
+Solution: Synchronize access to shared information!
 
 ---
 
 ### Synchronization
 
+We can force synchronization at either the method level or the statement level.
+- For the statement level just know the term async for now.
+
+We will study method level synchronization.
+
+For the counter example, our increment method required synchronization. **Therefore we modify the header of our method (we create a separate SyncCounter class to demonstrate the difference coming up)**
+
+Ex.
+`public synchronized void increment()...`
+
+Look at the SyncCounter, IncreaseSync, and Demo05 classes to see these changes.
+
 ---
 
 ### A Synchronized Queue
+
+Queues are often used concurrently in concurrent programs.
+
+- In essence they act as a buffer or repository that holds unfinished work which was created by "producer" threads and will later be handled by "consumer" threads.
+
+- **If a collection is used by multiple threads, it must be synchronized! Otherwise some elements could be skipped or accessed more than once by misktake due to interference while manupulating the underlying data structure.**
+
+Lets first try creating a Runnable class that will attempt to dequeue several elements until the queue is empty.
+
+- Observe the IncreaseUseArray class and Demo06 as all further discussion revolves around these two classes!
 
 ---
 
