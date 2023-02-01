@@ -738,6 +738,69 @@ Lets first try creating a Runnable class that will attempt to dequeue several el
 
 - Observe the IncreaseUseArray class and Demo06 as all further discussion revolves around these two classes!
 
+This version of the program is unsynchronized, so lets see what that entails...
+
+- The Demo06 program creates a queue and inserts integers from 0 to 100 into the queue. It then generates and runs two threads which both contain the same object *q* which is a queue object. **Both IncreaseUseArray objects are operating on the same queue object which will ineviteably cause synch issues.**
+
+- Access to the counter is synched, as the increment() method has the ***synchronized*** modifier.
+
+- Each IncreaseUseArray object removes the current front element of the queue. Therefore if thread one removes "1" from the front, then after that, thread 2 will remove "2" and so on and forth.
+
+1, 2, 3, 4, 5, 6, 7, 8, 9, 10
+First thread removes 1, second thread removes 2, third thread removes 3, e.t.c
+
+Now since the counter is synched you would assume that if we wanted to get the sum of the numbers from 1 to 100 (which is what the counter in both threads will increment to) should be a trivial task. The sum of numbers from 1 to 100 should be 5050.
+
+However, the count of the counter hovers around 5000, but is not exactly 5050, sometimes a null pointer exception may even be produced. 
+
+Why?:
+- **Although access to the counter is synchronized, access to the queue itself is not synchronized.**
+- **Interference during access to the dequeue method may occur multiple times which explains the inconsistent results.**
+- **To fix this issue we would want to create a synchronized queue class.**
+- **This is not difficult, we just add the synchonrized keyword to any multiple methods to ensure that only one thread is allowed into one method at any given time.** 
+- Using the SyncArrayBoundedQueue class in place of the ArrayBoundedQueue class will fix this issue.
+- **To see the SyncArrayBoundedQueue class in action check out Demo07 and the SyncArrayBoundedQueue classes. This application reliably returns the correct count (5050) each time.**
+
+Interference problems are avoided by making any queue access and increment methods synchorous. Every attempt to access the queue waits for the other thread that will try to access it.
+
+- Once a thread as the increment value from the queue, it may want to jump into the counter object to increment it, but it must wait there as well for any previous threads to leave the incrementing method of the counter (since the counter's methods are synchronized as well).
+- **There are very few concurrent operations taking place, but while one thread is incrementing, the other thread can be accessing the queue and vice versa.**
+
+- Since there is limited concurreny, simply adding another processor will not dramatically boost the speed of the overall process. Data is not being accessed simulataneously and therefore, adding one more queue does not change the fact that the processes are taking turns in modifying the data.
+
+- With this much synchronization, most of the work gets done sequentially rather than concurrently because not a lot of processes can interject between each other. Each process (thread) locks the other threads out of the code it is working on.
+
+- **Given 2 threads, if each thread operated on distinct counter objects and the program as a whole returned the counts of both counters, then in fact the program would be twice as fast. Threads would not have to wait on each other in incrementing the counter, because they would each have their own respective counter.**
+
+- **If the work to be done by the thread is less than the work required to create the thread then it usually better and faster to do the work the sequential way. In other words, don't waste your time creating the thread if that is the most expensive aspect of your program time-wise compared to the actual work the thread performs.**
+
 ---
 
 ### Concurrency and the Java Collection Classes
+
+Out of all the classes in the collection framework, **9 classes implement the Queue interface and 4 implement the Deque interface.**
+
+- The ArrayBlockingQueue, LinkedBlockingQueue, DelayQueue, Synchronous-Queue, and PriorityBlockingQueue all share the feature that rejects **a thread attempting to put an element into a full queue until the time when a slot opens up in the queue. Also for these classes, a thread attempting to retrieve an element from an empty queueu will be rejected until a queue is available.**
+
+- The ConcurrentLinkedQueue is thread-safe, meaning that operations on objects of the ConcurrentLinkedQueue are synchronized to allow concurrent access.
+
+- Originally, most of the collection classes in the Collections framework were thread safe (including Vector, Stack, Dictionary, and HashTable). However, there is an execution time cost associated with maintaining thread safe behavior. 
+
+- Users of these classes typically do not want to use concurrent threads, so having thread safe behavior was deemed un-neccesary and too much overhead cost.
+
+- With Java 2, non thread-safe alternatives to each original class were introduced:
+
+Vector -> ArrayList became the non-thread safe alt
+HashTable -> HashSet, HashMap became the non-thread safe alt
+
+- The original thread safe classes in the collection are considered historical or legacy collection classes and rarely preferred over their non-thread safe, and substanially quicker alternatives.
+
+You can still turn non-thread safe classes into synchronized classes via some handy tools in the Collections framework.
+
+Ex.
+`Set a = Collection.synchronizedSet(new HashSet())`
+
+
+
+
+
