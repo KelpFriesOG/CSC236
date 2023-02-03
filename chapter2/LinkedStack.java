@@ -29,6 +29,8 @@ public class LinkedStack<T> implements StackInterface<T> {
 
     }
 
+    
+
     @Override
     public T top() throws StackUnderflowException {
         if (!isEmpty()) {

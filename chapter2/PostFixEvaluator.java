@@ -39,6 +39,7 @@ public class PostFixEvaluator {
                     if (stack.isEmpty()) {
                         throw new Exception("Not enough operands, stack underflow!");
                     }
+
                     operand1 = stack.top();
                     stack.pop();
 
