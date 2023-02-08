@@ -1,169 +1,226 @@
 {
-    // Use IntelliSense to learn about possible attributes.
-    // Hover to view descriptions of existing attributes.
-    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
-    "version": "0.2.0",
-    "configurations": [
-        {
-            "type": "java",
-            "name": "Launch EditString",
-            "request": "launch",
-            "mainClass": "labs.lab2.EditString",
-            "projectName": "CSC236_6408cede"
-        },
-        {
-            "type": "java",
-            "name": "Launch ShapesCLI",
-            "request": "launch",
-            "mainClass": "labs.lab2.ShapesCLI",
-            "projectName": "CSC236_6408cede"
-        },
-        {
-            "type": "java",
-            "name": "Launch Current File",
-            "request": "launch",
-            "mainClass": "${file}"
-        },
-        {
-            "type": "java",
-            "name": "Launch BalancedTest",
-            "request": "launch",
-            "mainClass": "chapter2.BalancedTest",
-            "projectName": "CSC236_6408cede"
-        },
-        {
-            "type": "java",
-            "name": "Launch PFixTesting",
-            "request": "launch",
-            "mainClass": "chapter2.PFixTesting",
-            "projectName": "CSC236_6408cede"
-        },
-        {
-            "type": "java",
-            "name": "Launch BinarySearch",
-            "request": "launch",
-            "mainClass": "chapter3.BinarySearch",
-            "projectName": "CSC236_6408cede"
-        },
-        {
-            "type": "java",
-            "name": "Launch Combinations",
-            "request": "launch",
-            "mainClass": "chapter3.Combinations",
-            "projectName": "CSC236_6408cede"
-        },
-        {
-            "type": "java",
-            "name": "Launch TowersOfHanoi",
-            "request": "launch",
-            "mainClass": "chapter3.TowersOfHanoi",
-            "projectName": "CSC236_6408cede"
-        },
-        {
-            "type": "java",
-            "name": "Launch ArrayBoundedQueueITD",
-            "request": "launch",
-            "mainClass": "chapter4.ArrayBoundedQueueITD",
-            "projectName": "CSC236_6408cede"
-        },
-        {
-            "type": "java",
-            "name": "Launch Demo01",
-            "request": "launch",
-            "mainClass": "chapter4.Demo01",
-            "projectName": "CSC236_6408cede"
-        },
-        {
-            "type": "java",
-            "name": "Launch Demo02",
-            "request": "launch",
-            "mainClass": "chapter4.Demo02",
-            "projectName": "CSC236_6408cede"
-        },
-        {
-            "type": "java",
-            "name": "Launch Demo03",
-            "request": "launch",
-            "mainClass": "chapter4.Demo03",
-            "projectName": "CSC236_6408cede"
-        },
-        {
-            "type": "java",
-            "name": "Launch Demo04",
-            "request": "launch",
-            "mainClass": "chapter4.Demo04",
-            "projectName": "CSC236_6408cede"
-        },
-        {
-            "type": "java",
-            "name": "Launch Demo05",
-            "request": "launch",
-            "mainClass": "chapter4.Demo05",
-            "projectName": "CSC236_6408cede"
-        },
-        {
-            "type": "java",
-            "name": "Launch Demo06",
-            "request": "launch",
-            "mainClass": "chapter4.Demo06",
-            "projectName": "CSC236_6408cede"
-        },
-        {
-            "type": "java",
-            "name": "Launch Demo07",
-            "request": "launch",
-            "mainClass": "chapter4.Demo07",
-            "projectName": "CSC236_6408cede"
-        },
-        {
-            "type": "java",
-            "name": "Launch Palindrome",
-            "request": "launch",
-            "mainClass": "chapter4.Palindrome",
-            "projectName": "CSC236_6408cede"
-        },
-        {
-            "type": "java",
-            "name": "Launch RepeatStrings",
-            "request": "launch",
-            "mainClass": "chapter4.RepeatStrings",
-            "projectName": "CSC236_6408cede"
-        },
-        {
-            "type": "java",
-            "name": "Launch SimulationITD",
-            "request": "launch",
-            "mainClass": "chapter4.SimulationITD",
-            "projectName": "CSC236_6408cede"
-        },
-        {
-            "type": "java",
-            "name": "Launch Workshop",
-            "request": "launch",
-            "mainClass": "chapter4.Workshop",
-            "projectName": "CSC236_6408cede"
-        },
-        {
-            "type": "java",
-            "name": "Launch VocabularyDensity",
-            "request": "launch",
-            "mainClass": "chapter5.VocabularyDensity",
-            "projectName": "CSC236_6408cede",
-            "args": "${command:SpecifyProgramArgs}"
-        },
-        {
-            "type": "java",
-            "name": "Launch BankAccountITD",
-            "request": "launch",
-            "mainClass": "labs.lab1.BankAccountITD",
-            "projectName": "CSC236_6408cede"
-        },
-        {
-            "type": "java",
-            "name": "Launch ShoppingBagITD",
-            "request": "launch",
-            "mainClass": "labs.lab1.ShoppingBagITD",
-            "projectName": "CSC236_6408cede"
-        }
-    ]
+  // Use IntelliSense to learn about possible attributes.
+  // Hover to view descriptions of existing attributes.
+  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "java",
+      "name": "Launch HexToDec2",
+      "request": "launch",
+      "mainClass": "workshop.HexToDec2",
+      "projectName": "CSC236_6408cede"
+    },
+    {
+      "type": "java",
+      "name": "Launch HexToDecTesting",
+      "request": "launch",
+      "mainClass": "workshop.HexToDecTesting",
+      "projectName": "CSC236_6408cede"
+    },
+    {
+      "type": "java",
+      "name": "Launch AccountTest",
+      "request": "launch",
+      "mainClass": "workshop.AccountTest",
+      "projectName": "CSC236_6408cede"
+    },
+    {
+      "type": "java",
+      "name": "Launch ReverseStringITD",
+      "request": "launch",
+      "mainClass": "labs.lab3.ReverseStringITD",
+      "projectName": "CSC236_6408cede"
+    },
+    {
+      "type": "java",
+      "name": "Launch DiminishingSquares",
+      "request": "launch",
+      "mainClass": "labs.lab3.DiminishingSquares",
+      "projectName": "CSC236_6408cede",
+      "args": "${command:SpecifyProgramArgs}"
+    },
+    {
+      "type": "java",
+      "name": "Launch StackTesting",
+      "request": "launch",
+      "mainClass": "workshop.StackTesting",
+      "projectName": "CSC236_6408cede"
+    },
+    {
+      "type": "java",
+      "name": "Launch testQ1",
+      "request": "launch",
+      "mainClass": "workshop.testQ1",
+      "projectName": "CSC236_6408cede"
+    },
+    {
+      "type": "java",
+      "name": "Launch CSInfo",
+      "request": "launch",
+      "mainClass": "chapter5.CSInfo",
+      "projectName": "CSC236_6408cede"
+    },
+    {
+      "type": "java",
+      "name": "Launch EditString",
+      "request": "launch",
+      "mainClass": "labs.lab2.EditString",
+      "projectName": "CSC236_6408cede"
+    },
+    {
+      "type": "java",
+      "name": "Launch ShapesCLI",
+      "request": "launch",
+      "mainClass": "labs.lab2.ShapesCLI",
+      "projectName": "CSC236_6408cede"
+    },
+    {
+      "type": "java",
+      "name": "Launch Current File",
+      "request": "launch",
+      "mainClass": "${file}"
+    },
+    {
+      "type": "java",
+      "name": "Launch BalancedTest",
+      "request": "launch",
+      "mainClass": "chapter2.BalancedTest",
+      "projectName": "CSC236_6408cede"
+    },
+    {
+      "type": "java",
+      "name": "Launch PFixTesting",
+      "request": "launch",
+      "mainClass": "chapter2.PFixTesting",
+      "projectName": "CSC236_6408cede"
+    },
+    {
+      "type": "java",
+      "name": "Launch BinarySearch",
+      "request": "launch",
+      "mainClass": "chapter3.BinarySearch",
+      "projectName": "CSC236_6408cede"
+    },
+    {
+      "type": "java",
+      "name": "Launch Combinations",
+      "request": "launch",
+      "mainClass": "chapter3.Combinations",
+      "projectName": "CSC236_6408cede"
+    },
+    {
+      "type": "java",
+      "name": "Launch TowersOfHanoi",
+      "request": "launch",
+      "mainClass": "chapter3.TowersOfHanoi",
+      "projectName": "CSC236_6408cede"
+    },
+    {
+      "type": "java",
+      "name": "Launch ArrayBoundedQueueITD",
+      "request": "launch",
+      "mainClass": "chapter4.ArrayBoundedQueueITD",
+      "projectName": "CSC236_6408cede"
+    },
+    {
+      "type": "java",
+      "name": "Launch Demo01",
+      "request": "launch",
+      "mainClass": "chapter4.Demo01",
+      "projectName": "CSC236_6408cede"
+    },
+    {
+      "type": "java",
+      "name": "Launch Demo02",
+      "request": "launch",
+      "mainClass": "chapter4.Demo02",
+      "projectName": "CSC236_6408cede"
+    },
+    {
+      "type": "java",
+      "name": "Launch Demo03",
+      "request": "launch",
+      "mainClass": "chapter4.Demo03",
+      "projectName": "CSC236_6408cede"
+    },
+    {
+      "type": "java",
+      "name": "Launch Demo04",
+      "request": "launch",
+      "mainClass": "chapter4.Demo04",
+      "projectName": "CSC236_6408cede"
+    },
+    {
+      "type": "java",
+      "name": "Launch Demo05",
+      "request": "launch",
+      "mainClass": "chapter4.Demo05",
+      "projectName": "CSC236_6408cede"
+    },
+    {
+      "type": "java",
+      "name": "Launch Demo06",
+      "request": "launch",
+      "mainClass": "chapter4.Demo06",
+      "projectName": "CSC236_6408cede"
+    },
+    {
+      "type": "java",
+      "name": "Launch Demo07",
+      "request": "launch",
+      "mainClass": "chapter4.Demo07",
+      "projectName": "CSC236_6408cede"
+    },
+    {
+      "type": "java",
+      "name": "Launch Palindrome",
+      "request": "launch",
+      "mainClass": "chapter4.Palindrome",
+      "projectName": "CSC236_6408cede"
+    },
+    {
+      "type": "java",
+      "name": "Launch RepeatStrings",
+      "request": "launch",
+      "mainClass": "chapter4.RepeatStrings",
+      "projectName": "CSC236_6408cede"
+    },
+    {
+      "type": "java",
+      "name": "Launch SimulationITD",
+      "request": "launch",
+      "mainClass": "chapter4.SimulationITD",
+      "projectName": "CSC236_6408cede"
+    },
+    {
+      "type": "java",
+      "name": "Launch Workshop",
+      "request": "launch",
+      "mainClass": "chapter4.Workshop",
+      "projectName": "CSC236_6408cede"
+    },
+    {
+      "type": "java",
+      "name": "Launch VocabularyDensity",
+      "request": "launch",
+      "mainClass": "chapter5.VocabularyDensity",
+      "projectName": "CSC236_6408cede",
+      "args": "${command:SpecifyProgramArgs}"
+    },
+    {
+      "type": "java",
+      "name": "Launch BankAccountITD",
+      "request": "launch",
+      "mainClass": "labs.lab1.BankAccountITD",
+      "projectName": "CSC236_6408cede"
+    },
+    {
+      "type": "java",
+      "name": "Launch ShoppingBagITD",
+      "request": "launch",
+      "mainClass": "labs.lab1.ShoppingBagITD",
+      "projectName": "CSC236_6408cede"
+    }
+  ]
 }

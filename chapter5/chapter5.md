@@ -195,6 +195,18 @@ Some notes regarding the actual application:
 
 ## Comparing Objects Revisited
 
+In order to understand how objects are identified and compared, we need to understand how to determine the equality of two objects.
+
+- **Understanding what it means to compare objects and determine which object is "greater" or "lesser" will allow us to try to store objects in a collection in "increasing" order.**
+
+- **If the elements in a collection are sorted, we can use algorithms such as the binary search to drastically decrease the time we would need to find an element!**
+
+- **But what does	it mean	to store elements “in order”? To	 understand	this we	need to understand object comparison by examining the equals() method and the compareTo() method (from the Comparable interface)!**
+
+--- 
+
+### The equals() method
+
 When comparing objects with the comparison operator (==) the comparison is actually made between the two reference variables that point to the object and NOT between the contents of the two objects.
 
 - The equals() method that comes from the Object class behaves exactly like the comparison operator.
@@ -215,25 +227,253 @@ When we write the equals() method of the Circle object, we can write the method 
 
 Ex.
 
+    @Override
     public boolean equals(Object obj){
 
         if(obj == this){
             // If the two objects are pointing to
             // the same thing in memory, then of cours
             // their contents are the same.
-            return true.
+            return true;
         }
 
-        if(obj == null || obj.getClass() )
+        else if(obj == null || obj.getClass() != this.getClass()){
+            // If a null reference is passed or
+            // the class of the passed obj is not the
+            // same as the class of the Circle() object
+            // then we don't even need to compare the
+            // contents! We know the two objects cannot be equal.
+            return false;
+        }
+
+        else{
+            // We know that both objects (the circle and the passed object)
+            // must be of the Circle class, we just need to cast the passed
+            // object first.
+
+            // Then if the two objects have the same radius we know their
+            // contents are the same so we return true, otherwise we return
+            // false.
+
+            Circle c = (Circle) obj
+            return (c.radius == this.radius);
+
+        }
 
     }
 
+In regards to the implementation of the previous equals() method note a few things that are considered good practice.
+
+- @Override notation indiactes to the compiler that we intend to override an ancestor's method. The compiler now double-checks the syntax to re-affirm that the method is actually overriding another method.
+
+- The if clause at the top checks if we are comparing a circle to another alias of itself. If so we just return true, no need to check contents.
+
+- The second if clause (else-if) checks if the argument is null, if it is we return false. **If the argument is null, everything to the right of the || sign is not even evaluated, since as long as one operant is false the whole thing is false**.
+
+- If the obj passed is not a null reference then we further ensure that the two objects being compared (this and the obj) are of the same class. If they are not objects of the same class then they cannot possibly be equal to another (by our definition).
+
+- If the processing comes to the else clause, then we cast the obj argument safely (since we know obj must of type Circle) and then compare the contents (the radii) to determine if the two objects have identical contents.
+
+`c1.equals(c2)` now has a whole new meaning based on the overrided method.
+
+**The key of a class is the set of attributes to determine the identity of a class. For a circle this is the radius!**
+
+Ex. 
+**Suppose I tell you to write an equals method for the FamousPerson class. If I say the unique set of attributes that distinguish two famous people is [firstName, lastName], then how would you code up the equals() method?**
+
+Answer:
+
+    public boolean equals(Object obj){
+
+        if(this == obj){
+            return true;
+        }
+
+        else if(obj == null || obj.getClass() != this.getClass()){
+            return false;
+        }
+
+        else{
+            FamousPerson fp = (FamousPerson) obj;
+            return (this.firstName.equals(fp.firstName) 
+                    && this.lastName.equals(fp.lastName));
+        }
+
+    }
+
+Take a look atthe FamousPerson class and the FamousCS.txt file. We will use these two files to create an application that will store the information from the text file into a collection.
+
+- Debug the program to see how it works. I hope we know how to do that by this point.
+
+- The key takeaway is this. As long as the user provides enough information to locate the item in the collection, **in other words as long as the user provides the keys** (based on the object's overriden .equals() implementation), we can pass a partial object to find what we want.
+
+- **In this case we only needed the first and last names and then constructed the partial object from those keys**
+
+`person = new FamousPerson(fname, lname, 0, "");`
+
+- This object is not complete but we can use to to find an "identical" element since an element is considered equal to this one if they share the same firstName and lastName properties!
+
+        if (people.contains(person)) {
+            person = people.get(person);
+            System.out.println(person + "\n");
+        }
+
+Breakdown:
+
+
+`person = people.get(person);`
+- If we find the person object inside the people collection, then we get the actual object that matched and reassign person to point to this retrieved object (retrieved via .get() method).
+
+`System.out.println(person + "\n");`
+- This might be confusing if you don't know the intricacies of Java. But basically, printing an object actually calls the toString() method of the object. We have overrided the Object's toString() method in the FamousPerson class, therefore our custom implementation of toString() is called in this line.
+
+---
+
+### The Comparable Interface
+
+The equals method allows us to check whether a particular element is in a collection.
+
+- **The compareTo() method extends the functionality to not only see if two objects are equal but also if one object is less than or more than another.**
+
+- **compareTo() returns a negative integer, zero, or a positive integer as this object is less than, equal to, or greater than the specified object respectively.**
+
+Ex.
+
+    int result = obj1.compareTo(obj2);
+    // If obj1 > obj2 returns 1
+    // Else if obj1 = obj2 returns 0
+    // Else (if obj1 < obj2) returns -1
+
+**If we use the compareTo method of a class to sort the objects of a class, this order is considered the natural order.**
+
+- The compareTo() method's implementation should reflect the real world order of particular strings. In other words, strings should be arranged alphabettically, numbers might be stored in increasing order, golf scores might be sorted from high to low (since low means better in golf), and e.t.c
+
+- **For a Car() object you might want to sort the cars based on increasing mileage, or maybe increasing price. Or some combination of the two, you can define this order via the compareTo() method.**
+
+- We can use the Comparable interface with generics
+`public class ClassA<T> implements Comparable<T>`
+
+Using generic types with the compareTo() method ensures that we only compare compatible objects!
+
+- Lets create a compareTo method for the FamousPerson class:
+
+    public int compareTo(FamousPerson other){
+        if(!this.lastName.equals(other.lastName)){
+            return this.lastName.compareTo(other.lastName);
+        }
+        else{
+            return this.firstName.compareTo(other.firstName);
+        }
+    }
+
+Lets break down the approach above.
+
+- First we check if the lastName property between the two objects is identical.
+
+- **If the lastName is not equal between them, then we compare the lastName and return an int (which has to be -1 or 1) based on which lastName is greater as a String (which one alphabetically comes first).**
+  
+- **Else, we know that the lastName property IS EQUAL between the two objects. Then we have to resort comparing the firstName property and return a result based on which object has a firstName that comes first alphabetically. (could return -1, 0, or 1)**
+
+- Note that if the two objects have the same lastName and the same firstName then this else statement is entered and evaluates to 0 (sinc firstName property is equal).
+
+Ex. 
+FamousPerson objects with the respective first and last names:
+
+obj1 : Kalpesh Chacha
+obj2 : Kalpesh Chavan
+
+obj1.compareTo(obj2);
+
+**Goes inside if statement since the two lastName strings are not equal, then we return based on the fact that obj1's last name (Chacha) comes first alphabetically (compared to Chavan). Therefore we return 1.**
+
+obj1: Kelp Chavan
+obj2: Kalpesh Chavan
+
+obj1.compareTo(obj2);
+
+**Goes inside else statement since the two lastName strings are equals, then we return based on the fact that obj2's first name (Kalpesh) comes first alphabetically compared to obj1's first name (Kelp). Therefore we return -1**
+
+obj1: Kalpesh Cha
+obj2: Kalpesh Cha
+
+obj1.compareTo(obj2);
+
+**Goes inside else statement since the two lastName strings are equal and then compares the two firstName strings and we realize that the firstName's are also lexographically identical. Therefore we return 0 based on the result of comparing the firstName strings (in the else statement).**
 
 ---
 
 ## Sorted Array-Based Collection Implementation
 
+The initial ArrayCollection.java class assumed that all elements were just meant to be dumped into the next available slot in the array.
 
+- **We did not care about the order of the elements in the arry (based on how they compare with one another) for the basic ArrayCollection.**
+
+- The add() operation for the ArrayCollection has a constant, O(1), time complexity. But all other operations: get(), contains(), and remove(), operated in O(n) time complexity.
+
+- **If we keep the internal array sorted as we keep adding and removing elements, then the searching mechanism behind the contains() method can be a binary search algorithm! This would also benefit the get() and remove() methods that use the contains() methods for the bulk of their work!**
+
+- **This would drastically simplify the complexity of our contains(), get(), and remove() methods to O(log(n)).**
+
+- The tradeoff would be the complexity of the add() method, since the method now needs to add an element in the right place of the array which is a complicated O(n) process.
+
+- Our new implementation **will also be unbounded to hold a larger amount of elements and to truly utilize the better and more efficent algorithms behind the primary operations.**
+
+- **The enlarge() method will be implemented and invoked internally by the add() method whenever needed!**
+
+---
+
+### Comparable Elements
+
+Can you force applications to use Comparable classes when providing an argument for a generic type? YES
+
+- **A bounded type has a type parameter (like T) but we restrict what T can possibly be based on saying that T should implement or should extend some other interface or class. **
+
+Ex. `ArrayBoundedStack<T implements Comparable<T>>>`
+
+So the T specified as the concrete type for the stack during creation MUST implement the Comparable type.
+
+Following this example we can create a dummy class called Duo.java (check it out in the files or see it below).
+
+    public class Duo<T extends Comparable<T>>{
+        
+        protected T first;
+        protected T second;
+
+        public Duo(T first, T second){
+            
+            this.first = first;
+            this.second = second;
+
+        }
+
+        public T larger(){
+            if (first.compareTo(second) > 0){
+                return first;
+            } else{
+                return second;
+            }
+        }
+
+    }
+
+Note that for the Duo class, the parameter T, specified in the class header, must implement the Comparable<T> interface.
+
+- Wait so why do we say "extends" in the bounds instead of implements???
+- Confusing java syntax. Just remember to always say extends within the bounds of bounded type.
+
+`Duo<T implements Comparable<T>>` WILL NOT WORK!
+
+- For generics we just use `implements` for everything!
+
+- If we tried to instantiate a Duo object with a type for T that did not implement the Comparable<T> interface, then the compiler would throw us errors! (our program would not run!)
+
+Although we could try to use the Duo class to ensure that only Comparable classes are used in the SortedArrayCollection, i.e.
+
+`SortedArrayCollection<T extends Comparable<T>> implements CollectionInterface<T>{...}`
+
+---
+
+### The Implementation
 
 ---
 

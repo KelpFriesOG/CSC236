@@ -1,6 +1,7 @@
 package chapter2;
 
 public interface StackInterface<T> {
+
     void push(T element) throws StackOverflowException;
 
     // Throws StackOverflowException if this stack is full,
