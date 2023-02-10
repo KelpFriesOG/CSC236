@@ -6,6 +6,34 @@
   "configurations": [
     {
       "type": "java",
+      "name": "Launch Turtle",
+      "request": "launch",
+      "mainClass": "workshop.Turtle",
+      "projectName": "CSC236_6408cede"
+    },
+    {
+      "type": "java",
+      "name": "Launch StdDraw",
+      "request": "launch",
+      "mainClass": "workshop.StdDraw",
+      "projectName": "CSC236_6408cede"
+    },
+    {
+      "type": "java",
+      "name": "Launch SortedArrayCollection",
+      "request": "launch",
+      "mainClass": "chapter5.SortedArrayCollection",
+      "projectName": "CSC236_6408cede"
+    },
+    {
+      "type": "java",
+      "name": "Launch TSquare",
+      "request": "launch",
+      "mainClass": "workshop.TSquare",
+      "projectName": "CSC236_6408cede"
+    },
+    {
+      "type": "java",
       "name": "Launch HexToDec2",
       "request": "launch",
       "mainClass": "workshop.HexToDec2",

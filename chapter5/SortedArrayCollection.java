@@ -13,13 +13,13 @@ public class SortedArrayCollection<T extends Comparable<T>> implements Collectio
 
     @SuppressWarnings("unchecked")
     public SortedArrayCollection() {
-        elements = (T[]) new Object[DEFCAP];
+        elements = (T[]) new Comparable[DEFCAP];
         origCap = DEFCAP;
     }
 
     @SuppressWarnings("unchecked")
     public SortedArrayCollection(int capacity) {
-        elements = (T[]) new Object[capacity];
+        elements = (T[]) new Comparable[capacity];
         origCap = capacity;
     }
 
@@ -32,22 +32,27 @@ public class SortedArrayCollection<T extends Comparable<T>> implements Collectio
 
     protected void find(T target) {
 
+        if (isEmpty()) {
+            location = 0;
+            return;
+        }
+
         location = 0;
         // Location to start search will be beginning of array
         found = false;
         // We will only change found to true if we find a matching element.
 
-        int first = 0, last = numElements - 1, mid;
+        int first = 0, last = numElements - 1, mid = 0;
 
         while (first < last) {
 
             found = false;
             mid = (first + last) / 2;
+            location = mid;
             int comparison = target.compareTo(elements[mid]);
 
             if (comparison == 0) {
                 found = true;
-                location = mid;
                 break;
             } else if (comparison < 0) {
                 last = mid - 1;
@@ -55,6 +60,13 @@ public class SortedArrayCollection<T extends Comparable<T>> implements Collectio
                 first = mid + 1;
             }
 
+        }
+
+        if (!found) {
+            int comparison = target.compareTo(elements[location]);
+            if (comparison > 0) {
+                location++;
+            }
         }
 
     }
@@ -129,6 +141,19 @@ public class SortedArrayCollection<T extends Comparable<T>> implements Collectio
     @Override
     public int size() {
         return numElements;
+    }
+
+    public static void main(String[] args) {
+
+        SortedArrayCollection<Integer> myColl = new SortedArrayCollection<>();
+        myColl.add(7);
+        myColl.add(3);
+        myColl.add(4);
+        myColl.add(5);
+        myColl.add(3);
+
+        System.out.println(myColl.toString());
+
     }
 
 }

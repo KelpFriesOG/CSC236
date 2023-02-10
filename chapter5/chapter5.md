@@ -467,13 +467,57 @@ Note that for the Duo class, the parameter T, specified in the class header, mus
 
 - If we tried to instantiate a Duo object with a type for T that did not implement the Comparable<T> interface, then the compiler would throw us errors! (our program would not run!)
 
-Although we could try to use the Duo class to ensure that only Comparable classes are used in the SortedArrayCollection, i.e.
 
-`SortedArrayCollection<T extends Comparable<T>> implements CollectionInterface<T>{...}`
+- According to the textbook:
+  "Attempting to declare an array of <T extends Comparable<T>>	results	in a syntax	error. So we need to find a	different	approach. Rather than try to enforce the use of	Comparable classes using syntactic means we	will use our “programming by contract”	approach. **We specify as	a precondition of the add method that its	argument is comparable to the previous objects added to the collection.** **As the add method is the only way for an element to	get	into the collection, we	are	guaranteed that	all	elements held in	our	SortedArrayCollection can be compared to each other.**"
+
+  The long and short of it is that:
+  `SortedArrayCollection<T> implements CollectionInterface<T>`
+ is how the dumb book makes the header look, **this means that we are forced to try and cast any variable of type T whenever we use it to call compareTo() to reinforce that it implements Comparable so that the compiler can assume that it has an implementation of the method.**
+
+ More experienced developers know that to avoid always having to cast, we can enforce that the type T that we use to create the Object should implement Comparable to begin with via the Constructor and the class header!
+
+ To do that we modify the header a bit!
+ `SortedArrayCollection<T extends Comparable<T>> implements CollectionInterface<T>`
 
 ---
 
 ### The Implementation
+
+The internal representation of teh SortedArrayCollection class is an unbounded array that enlarges itself whenever it hits its maximum capacity.
+
+- The array must always be kept sorted. Anytime we add any elements, they must be added to ensure that the order stays unchanged (be it least -> greatest or greatest -> least based on the compareTo() method)!
+
+- **The enlarage() method increases the size of the internal array by the original capacity (the capacity the array initially started with before any enlargement).**
+
+- **The find() method of this class serves the same purpose as the find() method of the unsorted ArrayCollection class. However, the sorted nature of the elements allows us to use a faster, binary search, algorithm to find the element. This find method has a worst case time complexity of O(log(n)) as opposed to O(n), which was the worst case complexity finding the element in an unsorted collection.**
+
+- The original implementation of this class (which you can find online) requires the passed element to be casted into a type of Comparable to utilize the compareTo() method in the find() method. **My implementation does not need this casting because the list can only be declared with a type T that MUST implement Comparable<T>.**
+
+- When we go to add in an element we cannot simply add an element to the end of the list. We must first call find() on the element. Why?
+
+`find(element)`
+
+**The find method has a bonus functionality. If the element is not found, then the found variable is false, but the location variable is set to the index where the element should be inserted.**
+
+- **We make use of the changed location variable to know where to insert the new element! First we shift all the elements at and after the location by 1 position up (to the right if you visualize it as an array). This creates a gap at the index specified by the location variable. Then we can safely insert the new element at the location (because it will not be overwritting any pre-existing value).**
+
+Visual:
+
+![alt link](SortedCollectionInsertion.PNG "Title")
+
+- **The remove method similarly just shifts all the elements after the location down by one. So starting from index: location, we say : elements[i] = elements[i + 1]; This wipes out the value at the location (overwrites it) with the next value and so on and so forth. We simply say that we shifted all the elements after the location down by 1.**
+
+Visual:
+
+![alt link](SortedCollectionDeletion.PNG "Title")
+
+### Implementing ADTs "by Copy" vs "by Reference"
+
+If we wanted to handle elements
+
+
+
 
 ---
 
