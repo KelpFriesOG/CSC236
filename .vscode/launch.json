@@ -6,6 +6,28 @@
   "configurations": [
     {
       "type": "java",
+      "name": "Launch VocabularyDensitySorted",
+      "request": "launch",
+      "mainClass": "chapter5.VocabularyDensitySorted",
+      "projectName": "CSC236_6408cede",
+      "args": "${command:SpecifyProgramArgs}"
+    },
+    {
+      "type": "java",
+      "name": "Launch Workshop",
+      "request": "launch",
+      "mainClass": "workshop.Workshop",
+      "projectName": "CSC236_6408cede"
+    },
+    {
+      "type": "java",
+      "name": "Launch BrownianSlowflake",
+      "request": "launch",
+      "mainClass": "workshop.BrownianSlowflake",
+      "projectName": "CSC236_6408cede"
+    },
+    {
+      "type": "java",
       "name": "Launch Turtle",
       "request": "launch",
       "mainClass": "workshop.Turtle",

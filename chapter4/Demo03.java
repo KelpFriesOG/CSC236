@@ -6,6 +6,7 @@ public class Demo03 {
         Counter c = new Counter();
         Runnable r = new Increase(c, 10000);
         Thread t = new Thread(r);
+        
 
         t.start();
         t.join();

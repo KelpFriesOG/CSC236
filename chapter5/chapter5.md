@@ -514,21 +514,267 @@ Visual:
 
 ### Implementing ADTs "by Copy" vs "by Reference"
 
-If we wanted to handle elements
+If we wanted to handle elements we could choose to do so either by copy or by reference.
+
+- A **by copy** approach manipulates a copy of the data that is passed into the method. Making a valid copy of an object might be complicated. However, if your object has the clone() method from the Cloneable interface, the process is simplified.
+
+Ex. 
+
+    public void add(T element){
+        
+        elements[numElements] = element.clone();
+        numElements++;
+    }
 
 
+Valid copies of an object can typically be made using a clone method (if the object's class has such a method). **In the example above, we assumed that the object, of type T, implements the Cloneable interface and provides a thorough implementation for the clone() method.**
 
+ **In the typical implementation of collections that store Objects: the reference to the added element would be stored.**
+
+ - The key difference here, is that we are storing **a reference to the copy of the element, and not a reference to the original element.**
+
+- **The "by copy" implementation of the get method would also return a reference to the copy of the element that is found**.
+
+Ex. 
+
+public T get(T target){
+    
+    find(target);
+
+    if(found){
+        return elements[location].clone();
+    } else{
+        return null;
+    }
+    
+}
+
+- Why would we want to do this approach? After all, creating a copy of the data before storing it, and the returning a reference to the copy of the data instead of the original data takes up valuable time and resources!
+
+- Because this approach provides a layer of separation between the data the user wants to put into the collection and its actual state. **If I have an object and I want to add it to the collection, without actually giving a reference to the original piece of data, i.e. if I want to hide information, this ADT provides a separate repository which only deals with copies of the client data.**
+
+- A "by reference" approach is what we typically utilize in our normal collections.
+
+In other words our traditional implementations of the data manipulation methods.
+
+Ex.
+
+    public void add (T element){
+        
+        elements[numElements] = element;
+        numElements++;
+
+    }
+
+- The client program, which is to say the collection, reatins a reference to the element data within its array. The ADT still hides the internal organization of the collection. But it allows direct access to the collection's data through other references to each element that exist in the client program.
+
+So this means that if I add an element to a collection. And then use the reference to change something about the data in the client program, the reference to the data in the collection will also point to the changed object.
+
+![alt link](ByCopyVSByReference.PNG "Title")
+
+This illustration shows that a collection that deals with data through references **is just a collection of pointers that point to the original data in different parts of the memory. In other words it is simply organizing the references into a more quickly accessible pattern.**
+
+- **In other words, when we add elements to a collection that deals with data through reference, that data is not locked up in the collection. Instead we are simply keeping references to the original data in a more organized structure. The underlying original data can still be manipulated outside of the scope of the collection.**
+
+**The by copy approach takes the data and creates copies which are separate from the original data. Therefore any changes made on the collection's data do not affect the original external data and vice versa.**
+
+Which approach is better? 
+
+- **If processing time and space are issues, then making a copy of each element when manipulating the data is not ideal. Therefore the "by reference approach" would be the best.**
+
+- **If we don't care about space usage but we want meticulous control over the access and integrity of the collection, and want the collection to be detached from the elements of the client application, we should use the "by copy" approach.**
+
+---
+
+### Sample Application
+
+We can modify the sample application for vocabulary density, VocabularyDensity.java, to use a sorted collection instead of the typical collection.
+
+Check the VocabularyDensitySorted.java class to see the that the code works identically.
+
+- The sorted array collection's time complexity benefits really shine when you benchmark the two implementations of the program for the same text files. Finding the number of unique words requires to to use the contains() method each time we read a new word from the collection and check it against the words in the collection.
+
+- The complexity of the contains() method for our sorted collection is O(log(N)) which is much quicker than the O(n) complexity for the unsorted collection's implementation.
+
+- As we process larger and larger text files, we can see what difference this change in complexity means for the speed of processing:
+
+![alt link](SortedVSUnsortedSpeedComparison.PNG "Title")
+
+**Notice that in the example above, the larget file notices an insane efficency boost. Processing the fil takes 7.2 minutes with the sorted collection as opposed to 10 hours with the unsorted collection.**
 
 ---
 
 ## Link-Based Collection Implementation
 
+We can also implement the collection class using the LLNode class. The link-based representation will be an unsorted.
 
+- This section will discuss, compare and contrast the ArrayCollection class with the LinkedCollection class method by method.
+
+---
+
+### The Internal Representation
+
+The information portion of the node will contain the actual element, whereas the link will reference the next element in the collection.
+
+Check the `LinkedCollectionClass<T>` for further details and this is the class we will be referring to in the following discussion.
+
+- We keep a variable of type LLNode<T> called head to maintain the a reference to the first element in the linked list.
+
+- The constructor sets numElements to 0 and the head to null or a node based on a passed element to setup an empty collection or one that begins with a single specified element as the head.
+
+---
+
+### The Operations
+
+- **The numElements variable is needed to support the size() method.**
+- In theory we could use a for loop and keep calling getLink() alongside a counter to get the length of the entire underlying linked list. However, doing this each time we call the size() method would be O(n) operation. On the other hand, simply incrementing the numElements anytime a new element is added, and decrementing it whenever an element is removed, which means that we can just return the variable to get the size which is far less work (O(1) complexity)!
+- isEmpty() method just returns true if the numElements variable is 0 (which indicates an empty collection).
+
+- **The isFull() method will always return false, since a linked list based collection has no theoretical limit on the number of elements it can store.**
+
+- The add method creates a new node with the given element and links the new node to the *head* node. Then we assign the head reference to the reference of the new node. We also increase the numElements by 1 to indicate an additional element in the collection. **In other words, when we add to a linked list based collection, a new element is always added to the beginning of the collection (as the head node).**
+
+- The add method always returns true, because we don't have any space constraints.
+
+- The find method is protected because it should only be able to be used by other methods in the same class. The array based implementation used a while loop to iterate through the array and check, one my one, if the value at each location index were equal to the element the user is trying to search for. If a match was found, then the boolean *found* is set to true and location is already set to the index of the found element.
+
+- The implementation of find() for a link based collection is very similar. The only difference is that iteration happens using the .getLink() method on the current *location* which is a reference to the a node. We start by assigning the reference of head to the location variable. Then we enter a while loop that will only terminate if the location node is null. **If the location node is ever null, we will know that we have reached the end of the array. Once again, if the node's information matches with the target element we set found to true and return. Otherwise we change the value of previous to be the current location. And we change the location node by saying `location = location.getLink;`.**
+
+- **The variable *previous* is used in the remove() method in order to remove an element from the list. If we find an element in the collection for removal, the variable previous points to the node directly before the found element.** We can change the link of the previous node to the node after the location to cut of the node at the location variable.
+
+![alt link](LinkedCollectionRemoval.PNG "Title")
+
+- **In order to remove an element, we can simply unlink the found node by saying: `previous.setLink(location.getLink())`. This effectively says: set the link of the previous node to node that comes after the location node. If the node to remove is the head node, then we can just say `head = head.getLink()` to dereference and remove it.**
+
+- We can return the found variable, because the removal is successful if found was true and the removal did not occur if found was false.
+
+---
+
+### Comparing Collection Implementations
+
+Regardless of the implementation, the numElements variable persistently stores and updates the current number of elements in the collection. **This ensures that the size(), isEmpty(), and isFull() methods have a O(1) complexity**, because all they need to do is check against numElements.
+
+- The constructors for an ArrayCollection or SortedArrayCollection must create an internal array based on the capacity defined during the client's instantiation of the object. **The JVM must allot n slots in memory, where n is the capacity. Therefore the constructors of the ArrayCollection or SortedArrayCollection work in O(n) complexty.**
+
+- For the ArrayCollection, **the add() operation is trivial because it is a simple insertion into the next available slot in the array which is always at the index defined by numElements.** **The complexity of add() for an unsorted ArrayCollection is O(1).**
+
+- On the other hand the complexity of the add() operation is more complicated for a sorted collection. **To add an element to a sorted collection we first call the find() method which has a O(log(n)) complexity. However, we also have to insert at a non-predetermined location via a for loop which takes O(n) time.** **Therefore the overall complexity of the add operation for a SortedArrayCollextion is O(n).**
+
+- **As mentioned prior for a SortedArrayCollection, finding an element is done via a binary search algorithm. As a result the complexity of the find operation for a SortedArrayCollection is O(log(n)).** 
+
+- **However, the unsorted ArrayCollection class's implementation involves a for loop to look through n elements for a match. Therefore the complexity of the find() operation for a ArrayCollection is O(n).**
+
+- The complexity of the contains() and get() methods follow based on the complexity of the find() method that they both use. **Therefore for an unsorted ArrayCollection, contains() and get() operations have a O(n) time complexity. For a SortedArrayCollection they have a O(log(n)) complexity.**
+
+I did not touch on the LinkedCollection but its individual methods are very similar to the unsorted ArrayCollection class. They share the same complexities, with the exception of the class constructor.
+
+- **Unlike ArrayCollection and SortedArrayCollection which have an internal array of elements, a LinkedCollection only needs to initialize space for at most 1 node via its constructors. Therefore the constructor for LinkedCollection had a O(1) complexity.**
+
+In summary:
+
+![alt link](ComplexityAnalysis.PNG "Title")
 
 ---
 
 ## Collection Variations
 
+The functionality of a Collection seems so unneccesary and and simple.
 
+- Why should not we just use a normal array or even an ArrayList to store, remove and retrieve data?
+
+- **Well we can think of the Collection ADT as an additional abstraction between a typical array and more complicated data structures such as lists, search trees, maps, hash tables, and priority queues, amongst many more.**
+
+- These more complicated structures can be thought of as different forms of collections (because they share the core underlying functionality of a typical collection).
+
+- **This is why we call the Java library that has built in data structures the Collections framework.**
+
+- First we look at the role of collections in the JDK, and the then we will take a look at two commonly used collections: bags and sets.
+
+---
+
+### The Java Collection Framework
+
+**The "Collections Framework" is a unified architecture (library) of classes and interfaces that provides versatile tools for storing and retrieving information.**
+
+- The `Collection` interface is the core of the framework. It is found in the java.util package.
+
+- **The Collection interface has 11 subinterfaces including Deque, List, and Set and 33 implementing classes such as ArrayList, Stack, LinkedList and more!**
+
+- The Collection interface has 15 methods including familiar methods such as isEmpty, size, add, remove, and contains. 
+
+- The get() method is not present because the interface simply serves as the root of an inheritance tree, not all collections should have a get() method or some equivalent. The subinterfaces may have methods that have the same functionality as get() albeit with different names. You have to ask yourself, **should you be able to call get() on a Stack? No. So it does not make sense having the get method be at the root of the Collections framework.**
+
+Here are some additional methods in the Collection interface and their intended purpose:
+
+| **Method** | **Purpose** |
+| --- | ----------- |
+| toArray | Returns an array containing all of the elements of the collection. |
+| clear | Removes all elements. |
+| equals| Takes an Object argument, returning true if it is equal to the current collection and false otherwise. |
+| addAll | Takes a Collection argument and adds its contents to the current collection; returns a boolean indicating success or failure. |
+| retainAll | Takes a Collection argument and removes any elements from the current collection that are not in the argument collection; returns a boolean indicating success or failure. |
+| removeAll | Takes a Collection argument and removes any elements from the current collection that are also in the argument collection. |
+
+For people who know their set theory: removeAll is the difference of two sets, whereas the retainAll method gets the intersection of the two sets.
+
+- removeAll returns false if the changed collection is identical to the original collection (the two collections had no elements in common).
+
+- retainAll returns false if the changed collection is identical to the original collection (the two collections were identical in the unique elements they contained).
+
+---
+
+### The Bag ADT
+
+- Suppose we want to make an ADT that fits our notion of a bag. The ADT should allow duplicate elements. 
+
+- We can put in an object, search for an object based on a trait, and remove that specific object if needed.
+
+- We may also want to know how many objects are in the bag at a given time and whether or not the bag is empty or full.
+
+- Maybe we can make an operation to pull out a random object from the bag.
+
+- We may want to peek into the Bag and count the elements with a specific trait. We could also remove these particular elements.
+
+- To accomplish this functionality we have added the grab(), count(), removeAll(), and clear() methods to the BagInterface file.
+
+- **The BagInterface<T> extends from the CollectionInterface and therefore any class that implements the BagInterface has to fullfill the contract of both the CollectionInterface and BagInterface.**
+
+Check the files to see it in action.
+
+- The Bag ADT can be used by applications that need to count specific elements in a collection or remove all of a specific element from a collection. Additionally, the grab() operation allows the Bag ADT to be used for applications that require randomness.
+
+- Implementation of the Bag ADT is left as an interface.
+
+---
+
+### The Set ADT
+
+**The Set ADT will not allow duplicate elements.**
+
+- Mathematically, a set is a collection of distinct objects.
+
+**To make a Set class we can just copy and change the code from any other Collection class and make a slight modification to the add() method.**
+
+- In the add() method **we would check if the element we want to insert already exists in the collection, if it does not we would then add it and return true. Otherwise we would return false!**
+
+- Other than copying the code, we could simply extend another Collection and override its add method! We are introducing inheritance to our implementations!
+
+Check the BasicSet1() file to see how easy this is to implement.
+
+- The biggest drawback to this approach is that future changes to the underlying LinkedCollection implementation could invalidate the unique element constraint of the BasicSet subclass.
+
+- We also need to override the addAll method to ensure that duplicate elements are not mistakenly added via the addAll implementation in the parent Linked Collection class.
+
+Rather than extending the Linked Collection, we could use a LinkedCollection object internally inside another Set class. Sometimes this technique is referred to as wrapping or composition.
+
+Check the BasicSet2 class to see how that is implemented.
+
+- The only instance variable in this class is the LinkedCollection, which is the variable we use in every method of the BasicSet class.
+
+- Although BasicSet2 is more code to write than the BasicSet1 class, the BasicSet class avoids the maintainence issues of the BasicSet1 class.
+
+- You can define a more complex Set ADT that supports set operations such as union, difference, and intersection. 
+
+- **The BasicSet2 class is an example of hierarchical implementation. The BasicSet2 class is built using a LinkedCollection, which itself is composed of LLNode objects.**
 
 ---
