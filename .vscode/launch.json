@@ -6,6 +6,83 @@
   "configurations": [
     {
       "type": "java",
+      "name": "Launch SortedCollectionITD",
+      "request": "launch",
+      "mainClass": "labs.lab5.SortedCollectionITD",
+      "projectName": "CSC236_6408cede"
+    },
+    {
+      "type": "java",
+      "name": "Launch CollectionITD",
+      "request": "launch",
+      "mainClass": "labs.lab5.CollectionITD",
+      "projectName": "CSC236_6408cede"
+    },
+    {
+      "type": "java",
+      "name": "Launch LinkedQueueITD",
+      "request": "launch",
+      "mainClass": "labs.lab4.LinkedQueueITD",
+      "projectName": "CSC236_6408cede"
+    },
+    {
+      "type": "java",
+      "name": "Launch ABQueueITD",
+      "request": "launch",
+      "mainClass": "labs.lab4.ABQueueITD",
+      "projectName": "CSC236_6408cede"
+    },
+    {
+      "type": "java",
+      "name": "Launch QueueITD",
+      "request": "launch",
+      "mainClass": "labs.lab4.QueueITD",
+      "projectName": "CSC236_6408cede"
+    },
+    {
+      "type": "java",
+      "name": "Launch Example",
+      "request": "launch",
+      "mainClass": "chapter2.Example",
+      "projectName": "CSC236_6408cede"
+    },
+    {
+      "type": "java",
+      "name": "Launch Student",
+      "request": "launch",
+      "mainClass": "workshop.Student",
+      "projectName": "CSC236_6408cede"
+    },
+    {
+      "type": "java",
+      "name": "Launch CreatingLList",
+      "request": "launch",
+      "mainClass": "workshop.CreatingLList",
+      "projectName": "CSC236_6408cede"
+    },
+    {
+      "type": "java",
+      "name": "Launch PFixGUI",
+      "request": "launch",
+      "mainClass": "chapter2.PFixGUI",
+      "projectName": "CSC236_6408cede"
+    },
+    {
+      "type": "java",
+      "name": "Launch SelectionSort",
+      "request": "launch",
+      "mainClass": "workshop.SelectionSort",
+      "projectName": "CSC236_6408cede"
+    },
+    {
+      "type": "java",
+      "name": "Launch Lab1",
+      "request": "launch",
+      "mainClass": "labs.Lab1",
+      "projectName": "CSC236_6408cede"
+    },
+    {
+      "type": "java",
       "name": "Launch VocabularyDensitySorted",
       "request": "launch",
       "mainClass": "chapter5.VocabularyDensitySorted",

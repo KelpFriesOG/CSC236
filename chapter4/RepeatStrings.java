@@ -24,7 +24,7 @@ public class RepeatStrings {
             }
 
         } catch (Exception e) {
-            // TODO: handle exception
+
         }
 
         input.close();

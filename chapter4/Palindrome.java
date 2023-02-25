@@ -17,7 +17,7 @@ public class Palindrome {
         StackInterface<Character> stack = new ArrayBoundedStack<Character>(length);
         QueueInterface<Character> queue = new ArrayBoundedQueue<Character>(length);
 
-        StringBuilder sb = new StringBuilder();
+        // StringBuilder sb = new StringBuilder();
 
         try {
             for (char ch : message.toCharArray()) {

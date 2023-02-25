@@ -45,7 +45,6 @@ public class ArrayBoundedStack<T> implements StackInterface<T> {
         } else {
             throw new StackUnderflowException("The stack is empty, cannot pop any elements!");
         }
-
     }
 
     @Override

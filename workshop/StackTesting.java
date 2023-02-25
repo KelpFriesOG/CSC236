@@ -1,6 +1,5 @@
 package workshop;
 
-import chapter2.LLNode;
 import chapter2.StackOverflowException;
 
 public class StackTesting {
@@ -14,7 +13,6 @@ public class StackTesting {
             myStack.push(20);
             System.out.println(myStack.toString());
         } catch (StackOverflowException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
 

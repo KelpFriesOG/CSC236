@@ -26,4 +26,9 @@ public class LLNode<T> {
         this.link = link;
     }
 
+    @Override
+    public String toString() {
+        return this.info.toString();
+    }
+
 }

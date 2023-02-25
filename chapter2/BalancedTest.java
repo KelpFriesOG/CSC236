@@ -3,6 +3,8 @@ package chapter2;
 import java.util.Scanner;
 
 public class BalancedTest {
+    protected String testme;
+
     public static void main(String[] args) {
 
         Balanced bal = new Balanced("({[", ")}]");

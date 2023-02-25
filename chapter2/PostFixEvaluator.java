@@ -18,7 +18,7 @@ public class PostFixEvaluator {
         possibleOperators.add("/");
         int result = 0;
 
-        try (Scanner token = new Scanner(expression)) {
+        try (Scanner token = new Scanner(expression); Scanner token2 = new Scanner(System.in)) {
             while (token.hasNext()) {
                 if (token.hasNextInt()) {
                     value = token.nextInt();
@@ -33,6 +33,7 @@ public class PostFixEvaluator {
                     if (stack.isEmpty()) {
                         throw new Exception("Not enough operands, stack underflow!");
                     }
+
                     operand2 = stack.top();
                     stack.pop();
 

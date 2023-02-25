@@ -6,8 +6,17 @@ public class Example {
 
         LinkedStack<String> letters = new LinkedStack<>();
 
-        for(int i = 65; i <= 90; i++){
-            letters.push(""+(char) i);
+        for (int i = 65; i <= 90; i++) {
+            letters.push("" + (char) i);
+        }
+
+        try {
+            letters.pop();
+        } catch (StackUnderflowException e) {
+            System.err.println("Stack was empty");
+            e.getMessage();
+        } catch (Exception e) {
+
         }
 
         letters.toString();
