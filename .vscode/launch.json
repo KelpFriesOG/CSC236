@@ -6,6 +6,13 @@
   "configurations": [
     {
       "type": "java",
+      "name": "Launch ArrayCollection",
+      "request": "launch",
+      "mainClass": "labs.lab5.ArrayCollection",
+      "projectName": "CSC236_6408cede"
+    },
+    {
+      "type": "java",
       "name": "Launch SortedCollectionITD",
       "request": "launch",
       "mainClass": "labs.lab5.SortedCollectionITD",

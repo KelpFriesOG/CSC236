@@ -11,6 +11,7 @@
 package labs.lab5;
 
 public class ArrayCollection<T> implements CollectionInterface<T> {
+  int a = 1;
   protected final int DEFCAP = 100; // default capacity
   protected T[] elements; // array to hold collection�s elements
   protected int numElements = 0; // number of elements in this collection
@@ -163,5 +164,16 @@ public class ArrayCollection<T> implements CollectionInterface<T> {
 
     return ret;
 
+  }
+
+  static void add(int i1, int i2) {
+    i1 = i1 + i2;
+  }
+
+  public static void main(String[] args) {
+    int a = 1;
+    int b = 2;
+    add(a, b);
+    System.out.println(a);
   }
 }

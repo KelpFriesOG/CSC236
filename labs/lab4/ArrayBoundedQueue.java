@@ -123,7 +123,7 @@ public class ArrayBoundedQueue<T> implements QueueInterface<T> {
     @Override
     public String toString() {
 
-        String ret = "FRONT ";
+        String ret = "[ ";
         int index = front;
 
         for (int i = 0; i < numElements; i++) {
@@ -132,7 +132,7 @@ public class ArrayBoundedQueue<T> implements QueueInterface<T> {
             index = (index + 1) % elements.length;
         }
 
-        ret += " <: REAR";
+        ret = ret + "]";
 
         return ret;
 
