@@ -460,6 +460,158 @@ Take a look at the method in the LBList.java file for yourself to better underst
 
 ## Applications: Card Deck and Games
 
+We can use the List ADT to support a class that represents a deck of cards, and then use that class in some sample applications. 
+
+### The Card Class
+
+Before creating a class that represents a deck of cards, we need to create a class to represent each card.
+
+- **A card has a rank (1-10, J, Q, K) and a suit (Hearts, Clubs, Diamonds, Spades)**
+
+- Each of these attributes is represented by a public enumerable class.
+
+- **In other words, we will have a public enum Rank, and a public enum Suit.**
+
+- **Since the classes are public, they can be used within any other file as long as a proper import statement is used**
+
+- **Each card will also have and image which will be of class ImageIcon. This class comes from from the javax.swing library**
+
+The Card class will have an equals() method and a compareTo() method. We need to determine how two cards will be considered equal to each other and how one card can be greater or less than another...
+
+- **Two cards will be considered equal if they have the same rank and the same suit.**
+
+- **If one card has a higher rank than the other, then the card is greater than than the other card. The suit of either card is not a factor.**
+
+Check the Card class in the Card.java file to see all of this in action!
+
+---
+
+### The CardDeck Class
+
+We can use an internal List of size 52 for the CardDeck class since we know that all standard card decks have 52 cards.
+
+- **The internal representation of a CardDeck object is the ABList, and the internal representation of the ABList is an array. So much abstraction!**
+
+- A variable called **deck is an `ABList<Card>` object that utilizes a nested for-loop to be filled up with every possible combination of rank and suit (52 total cards).** The image file for each card is also chosen my manipulating the string representation of suit and rank for each card.
+
+- A second instance variable called **dealer is an iterator created from the deck that simulates dealing from the deck of cards.** (Remember to make an iterator we just call the iterator() method on the deck object). **The dealer is initialized in the constructor!**
+
+- **The hasNextCard and nextCard methods just check or move the underlying dealer iterator appropriately.**
+
+- **The shuffle() method uses the Random class to randomize the positions of the cards in the deck! It also resets the iterator variable, dealer, after shuffling.**
+
+Check the CardDeck class to see all this in action!
+
+---
+
+### Application: Arranging a Card Hand
+
+CardHandCLI.java is a file that is a command line interface program that utilizes the CardDeck class to generate one 5 card hand of playing cards for the user.
+
+- The user is allowed to arrange the cards in the order they prefer. An ABList of type Card (a hand as opposed to a deck) is used to hold and manage the hand of cards.
+
+- A for-each loop is used to display the cards as they are being dealt one by one.
+
+- The user can indicate where they want the next card placed in their hand before it enters their hand.
+
+- We use the index based add method of the ABList class in order to put the Card object into the right "slot" or position in the hand (the ABList object).
+
+Check the CardHandCLI class to see this in action!
+
+- The functionality of the CLI is also extended into a visual interface in the CardHandGUI.java file.
+
+---
+
+### Application: Higher or Lower
+
+HigherLower.java is a file that is a command line interface program that replicates the classic higher / lower game. You are dealt a card and you must predict if the next card will have a higher or lower rank than the card you have. 
+
+Check the HigherLower.java file to see this in action!
+
+---
+
+### Application: How Rare Is a Pair?
+
+This example is a simulation that can help verify a formal statistical analysis through multiple trial runs.
+
+- Five-card stud is a popular poker game in which each player is dealt 5 cards and the person with the best hand wins. Hands are rated from best to worst in the table below.
+
+| **Name** | **Meaning** |
+| -------- | ----------- |
+| Royal Flush | All cards of the same suit, with ranks 10 - Ace. |
+| Straight Flush | All cards of the same suit, with ranks in sequence. |
+| Four of a Kind | Four cards with the same rank. |
+| Full House | Three cards of one rank, two cards of a second rank. |
+| Flush | All cards of the same suit. |
+| Straight | All cards with ranks in sequence. |
+| Three of a Kind | Three cards with the same rank. | 
+| Two Pair | Two sets of cards of the same rank (ex. 8,8,3,9,9). |
+| One Pair | Two cards of the same rank. |
+| High Card | If we have none of the combos above, the highest ranking card in our hand is the "high card". |
+
 
 
 ---
+
+## Sorted Array-Based (Unbounded) List Implementation
+
+
+
+### The Insertion Sort
+
+---
+
+### Unsupported Operations
+
+---
+
+### Comparator Interface
+
+---
+
+### Constructors
+
+---
+
+### An Example (application)
+
+---
+
+## List Variations
+
+### Java Library Lists
+
+---
+
+### Linked List Variations
+
+---
+
+### A Linked List as an Array of Nodes
+
+---
+
+## Application: Large Integers
+
+### Large Integers
+
+---
+
+### The Internal Representation
+
+---
+
+### The LargeIntList Class
+
+---
+
+### The LargeInt Class
+
+---
+
+### Addition and Subtraction
+
+---
+
+### The LargeIntCLI Program
+

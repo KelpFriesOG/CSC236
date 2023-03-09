@@ -4,7 +4,7 @@ import chapter2.StackInterface;
 import chapter2.StackOverflowException;
 import chapter2.StackUnderflowException;
 
-public class ArrayBoundedStack<T> implements StackInterface<T> {
+public class ArrayBoundedStack<T> {
 
     protected final int CAPACITY = 100;
     protected T[] elements;
@@ -30,7 +30,6 @@ public class ArrayBoundedStack<T> implements StackInterface<T> {
         elements = (T[]) new Object[maxSize];
     }
 
-    @Override
     public void push(T element) throws StackOverflowException {
         if (!isFull()) {
             topIndex++;
@@ -41,11 +40,12 @@ public class ArrayBoundedStack<T> implements StackInterface<T> {
 
     }
 
-    @Override
-    public void pop() throws StackUnderflowException {
+    public T pop() throws StackUnderflowException {
         if (!isEmpty()) {
+            T temp = elements[topIndex];
             elements[topIndex] = null;
             topIndex--;
+            return temp;
         } else {
             throw new StackUnderflowException("The stack is empty, cannot pop any elements!");
         }
@@ -75,7 +75,6 @@ public class ArrayBoundedStack<T> implements StackInterface<T> {
         }
     }
 
-    @Override
     public T top() throws StackUnderflowException {
         if (!isEmpty()) {
             T value = elements[topIndex];
@@ -85,20 +84,17 @@ public class ArrayBoundedStack<T> implements StackInterface<T> {
         }
     }
 
-    @Override
     public boolean isFull() {
         return topIndex == elements.length - 1;
         // Returns true if the top index is pointing to the the n-1th element
         // This would mean our array is filled up!
     }
 
-    @Override
     public boolean isEmpty() {
         return topIndex == -1;
         // Returns true if topIndex == -1 (no elements in stack)
     }
 
-    @Override
     public String toString() {
 
         String result = "";
