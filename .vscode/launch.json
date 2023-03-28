@@ -6,6 +6,13 @@
   "configurations": [
     {
       "type": "java",
+      "name": "ListCompare",
+      "request": "launch",
+      "mainClass": "labs.lab6.ListCompare",
+      "projectName": "CSC236_6408cede"
+    },
+    {
+      "type": "java",
       "name": "Launch ArrayCollection",
       "request": "launch",
       "mainClass": "labs.lab5.ArrayCollection",

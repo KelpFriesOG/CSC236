@@ -44,7 +44,6 @@ public class ArrayUnboundedQueue<T> implements QueueInterface<T> {
         elements = newArray;
         front = 0;
         rear = numElements - 1;
-
     }
 
     @Override
@@ -94,10 +93,10 @@ public class ArrayUnboundedQueue<T> implements QueueInterface<T> {
     }
 
     @Override
-    public String toString(){
+    public String toString() {
 
         String response = "[";
-        for(int i = 0; i < numElements-1; i++){
+        for (int i = 0; i < numElements - 1; i++) {
 
             response += elements[(front + i) % elements.length] + ", ";
 

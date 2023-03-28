@@ -30,45 +30,42 @@ public class SortedArrayCollection<T extends Comparable<T>> implements Collectio
 
     }
 
-    protected void find(T target) {
-
-        if (isEmpty()) {
-            location = 0;
-            return;
-        }
-
+    protected void find(T target)
+    // Searches collection for an occurrence of an element e such that
+    // e.equals(target). If successful, sets instance variables
+    // found to true and location to the array index of e. If
+    // not successful, sets found to false and location to the
+    // array index where target should be inserted.
+    {
         location = 0;
-        // Location to start search will be beginning of array
         found = false;
-        // We will only change found to true if we find a matching element.
+        if (!isEmpty())
+            recFind(target, 0, numElements - 1);
+    }
 
-        int first = 0, last = numElements - 1, mid = 0;
+    protected void recFind(T target, int first, int last)
+    // Used by find.
+    {
+        int result; // result of the comparison
 
-        while (first <= last) {
-
+        if (first > last) { // BASE CASE
             found = false;
-            mid = (first + last) / 2;
-            location = mid;
-            int comparison = target.compareTo(elements[mid]);
-
-            if (comparison == 0) {
-                found = true;
-                break;
-            } else if (comparison < 0) {
-                last = mid - 1;
-            } else {
-                first = mid + 1;
-            }
-
-        }
-
-        if (first > last) {
-            found = false;
-            int comparison = target.compareTo(elements[location]);
-            if (comparison > 0)
+            result = target.compareTo(elements[location]);
+            if (result > 0)
                 location++; // adjust location to indicate insert index
         }
 
+        else { // RECURSIVE CASE
+            location = (first + last) / 2;
+            result = target.compareTo(elements[location]);
+            if (result == 0) // found target, BASE CASE
+                found = true;
+
+            else if (result > 0) // target too high
+                recFind(target, location + 1, last);
+            else // target too low
+                recFind(target, first, location - 1);
+        }
     }
 
     public boolean add(T element) {
@@ -112,6 +109,7 @@ public class SortedArrayCollection<T extends Comparable<T>> implements Collectio
         find(target);
 
         if (found) {
+            
             for (int i = location; i <= numElements - 2; i++) {
                 elements[i] = elements[i + 1];
             }

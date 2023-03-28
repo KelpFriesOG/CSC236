@@ -469,7 +469,7 @@ Note that for the Duo class, the parameter T, specified in the class header, mus
 
 
 - According to the textbook:
-  "Attempting to declare an array of <T extends Comparable<T>>	results	in a syntax	error. So we need to find a	different	approach. Rather than try to enforce the use of	Comparable classes using syntactic means we	will use our “programming by contract”	approach. **We specify as	a precondition of the add method that its	argument is comparable to the previous objects added to the collection.** **As the add method is the only way for an element to	get	into the collection, we	are	guaranteed that	all	elements held in	our	SortedArrayCollection can be compared to each other.**"
+  "Attempting to declare an array of `<T extends Comparable<T>>`	results	in a syntax	error. So we need to find a	different	approach. Rather than try to enforce the use of	Comparable classes using syntactic means we	will use our “programming by contract”	approach. **We specify as	a precondition of the add method that its	argument is comparable to the previous objects added to the collection.** **As the add method is the only way for an element to	get	into the collection, we	are	guaranteed that	all	elements held in	our	SortedArrayCollection can be compared to each other.**"
 
   The long and short of it is that:
   `SortedArrayCollection<T> implements CollectionInterface<T>`

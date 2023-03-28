@@ -116,7 +116,7 @@ public class SortedArrayCollection<T extends Comparable<T>> implements Collectio
         find(target);
 
         if (found) {
-            for (int i = location; i < numElements - 2; i++) {
+            for (int i = location; i <= numElements - 2; i++) {
                 elements[i] = elements[i + 1];
             }
 
@@ -145,14 +145,17 @@ public class SortedArrayCollection<T extends Comparable<T>> implements Collectio
 
     public static void main(String[] args) {
 
-        SortedArrayCollection<Integer> myColl = new SortedArrayCollection<>();
-        myColl.add(7);
-        myColl.add(3);
-        myColl.add(4);
-        myColl.add(5);
-        myColl.add(3);
+        // SortedArrayCollection<Integer> myColl = new SortedArrayCollection<>();
+        // myColl.add(7);
+        // myColl.add(3);
+        // myColl.add(4);
+        // myColl.add(5);
+        // myColl.add(3);
 
-        System.out.println(myColl.toString());
+
+        
+
+        // System.out.println(myColl.toString());
 
     }
 

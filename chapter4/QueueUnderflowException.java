@@ -1,6 +1,6 @@
 package chapter4;
 
-public class QueueUnderflowException extends Exception {
+public class QueueUnderflowException extends RuntimeException {
     public QueueUnderflowException() {
         super();
     }

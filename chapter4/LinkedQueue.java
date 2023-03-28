@@ -9,20 +9,22 @@ public class LinkedQueue<T> implements QueueInterface<T> {
     protected int numElements = 0;
 
     public LinkedQueue() {
-        front = rear = null;
+        front = null;
+        rear = null;
     }
 
     @Override
     public void enqueue(T element) {
 
         LLNode<T> newNode = new LLNode<T>(element);
+
         if (rear == null) {
             front = newNode;
         } else {
             rear.setLink(newNode);
         }
-
         rear = newNode;
+
         numElements++;
 
     }

@@ -30,6 +30,7 @@ public class FamousPerson implements Comparable<FamousPerson> {
         return yearOfBirth;
     }
 
+    
     @Override
     public boolean equals(Object obj) {
 
