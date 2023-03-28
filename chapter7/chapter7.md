@@ -351,3 +351,306 @@ Postorder traversal:
         
 
 ---
+
+## The BST Interface
+
+Apart from the binary tree traversals the user should also be able to perform the same operations on a Binary tree that they perform on a typical collection. 
+
+- The Binary Search Tree interface will extend the CollectionInterface which effectively means that any class that implements the BSTInterface will also have to satisfy the contract requirements of the Collection interface.
+
+- The BST interface will also enforce the ability to create an iterator object via a getIterator() method. However, we will also extend the Iterable interface which forces us to create a method called iterator().
+
+- **The iterator() and getIterator(Traversal orderType) methods are inherently very similar. The iterator method is just an easy way to create an iterator w/o having to specify a traversal.**
+
+- **In the code, the iterator() method just calls and returns getIterator(Traversal.Inorder). This is because the inorder traversal is considered the default traversal for a BST.**
+
+The code for the interface:
+
+        public interface BSTInterface<T> extends CollectionInterface<T>, Iterable<T>{
+
+            public enum Traversal {Inorder, Preorder, Postorder};
+            // This enum class is used to specify the traversal order for the iterator.
+            // The user will have to create and pass one of the values as an object of Traversal class.
+
+            T min();
+            // If the BST is not empty this method returns the smallest element in the tree.
+            // Otherwise if the tree is empty, this method returns a null reference.
+
+            T max();
+            // If the BST is not empty this method returns the largest element in the tree.
+            // Otherwise if the tree is empty, this method returns a null reference.
+
+            public Iterator<T> getIterator(Traversal orderType);
+            // Creates and returns an iterator object which contains elements of tree ordered
+            // based on the specified traversal. The iterator object is a snapshot of the tree,
+            // based on the elements of the tree that were present when the iterator was called.
+            // Therefore if we manipulate the tree after creating an iterator, those changes will
+            // not be reflected in the iterator object!
+
+        }
+
+- **Keep in mind that the CollectionInterface has its own set of requirements which are hidden here but include: boolean isFull(), boolean isEmpty(), int size(), boolean add(T element), T get(T target), boolean contains(T target), and boolean remove(T target).**
+
+---
+
+## Implementation: The BSTNode
+
+A Binary Tree, and consequently, a BST, is made up of several nodes which have 3 core components:
+
+1) **A link (BSTNode reference) to a "left" node.**
+2) **A link (BSTNode reference) to a "right" node.**
+3) **A field to store its own information, often called value or info!**
+
+Rememeber that left and right are just names we are giving to the references to help up visualize the tree, but they could in theory be called anything!
+
+- **When initializing a BST Node the info is given in the constructor but the links (left and right) start out as null references.**
+
+- setLeft() and setRight() are transformer (or setter) methods that set references based on the node reference passed into them.
+
+- getLeft() and getRight() are observer (or getter) methods that get and return the references to the left or right nodes to the calling class.
+
+- setInfo() and getInfo() are methods that set or get the info field of the node they are being called on.
+
+Code for a BSTNode (with generics involved for the type of the info field!):
+
+        public class BSTNode<T>{
+
+            private T info;
+            private BSTNode<T> left;
+            private BSTNode<T> right;
+
+            public BSTNode(T info){
+
+                this.info = info;
+                left = right = null;
+
+            }
+
+            public void setInfo(T info) {
+                this.info = info;
+            }
+
+            public T getInfo() {
+                return info;
+            }
+
+            public void setLeft(BSTNode<T> link) {
+                left = link;
+            }
+
+            public void setLeft(T link) {
+                left = new BSTNode<T>(link);
+            }
+
+            public void setRight(BSTNode<T> link) {
+                right = link;
+            }
+
+            public void setRight(T link) {
+                right = new BSTNode<T>(link);
+            }
+
+            public BSTNode<T> getLeft() {
+                return left;
+            }
+
+            public BSTNode<T> getRight() {
+                return right;
+            }
+
+        }
+
+---
+
+## Implementation: Observers
+
+---
+
+### The size() method
+
+The size() method can be implemented iteratively or recursively. But we favor the recursive implementation because it is far simpler to code and is more intuitive.
+
+- There is not a major drawback nor a major benefit regarding the speed of either implementation, so we just choose the one that is easier to code.
+
+Recursive Approach:
+1) If the node is not null then call recSize on the left and right subtrees. The returned value should be the sum of those recursive calls and 1, since the 1 represents counting the current node we are visiting.
+2) If the node is null, then return 0 to end recursion and represent the lack of a node.
+
+Code for recursive approach:
+
+        int recSize(){
+            return recSize(root);
+        }
+
+        private int recSize(BSTNode<T> node){
+
+            if(node == null){
+                return 0;
+            } else{
+                return recSize(node.getLeft()) + recSize(node.getRight()) + 1;
+            }
+
+        }
+
+
+Iterative approach (not favored but if you are curious):
+1) Create a stack of nodes and add the root to it initially (given the root is not null).
+2) After pushing the root, enter a while loop which will end when the stack is empty.
+3) In the loop, assign the top of the stack to a placeholder (currentNode maybe), and then pop the top of the stack.
+4) Increase the counter variable to indicate 1 more node being finished processing.
+5) After, still in the loop, push in the left reference of the placeholder node onto the stack (if it is not null).
+6) After, still in the loop, push in the right reference of the placeholder node onto the stack (if it is not null).
+7) After the loop, each node that had to be processed will have been processed (since the loop will only become empty after processing all leaf nodes and their prior ancestors). The counter will contain the size.
+8) Return the counter (if the root was null, then counter should be equal to 0 and none of the prior steps would have happened).
+
+Code for iterative approach:
+
+        public int size(){
+
+            int count = 0;
+            if (root != null){
+                
+                LinkedStack<BSTNode<T>> treeStack = new LinkedStack<BSTNode<T>>;
+                BSTNode<T> current;
+                treeStack.push(root);
+
+                while(){
+                    current = treeStack.top();
+                    treeStack.pop();
+                    count++;
+
+                    if(current.getLeft() != null){
+                        treeStack.push(current.getLeft());
+                    }
+                    if(current.getRight() != null){
+                        treeStack.push(current.getRight());
+                    }
+
+                }
+
+            }
+
+            return count;
+
+        }
+
+---
+
+### The contains() and get() operations!
+
+- The contains and get operations are very similar but not identical.
+
+- Both operations traverse the binary search tree in an identical manner to attempt to locate the specified node!
+
+- Both operations have a public method that simply requires the target element but have an internal, private, method that accepts the target and a node in order to perform the bulk of the work through recursion.
+
+- **The big difference is that the contains() method returns a boolean to indicate if the element was found or not. The get() method returns the found element itself rather than a true or false value.**
+
+Recursive traversal of a binary search tree is possible due to the binary search property:
+
+- the left subtree of a given node must contain values smaller than or equal to the node's, whereas the right subtree must contain values greater than the node's value.
+
+Recursive approach:
+
+- **If our target is smaller than the value at the node, we simply call our searching method on the left subtree.**
+- **If our target is greater than the value at the node, we call our searching method on the right subtree.**
+- **If the node we are at is equal to the target we return true / false for contains() or the node itself for the get() method.**
+- **If we reach a null node then the search was unsuccessful, since we traversed the tree properly but bottomed out somewhere. The "location" where we bottomed out is where the node should be inserted or should have been placed *if* the tree contained the node.**
+
+Code for recursive contains():
+
+        public boolean contains(T target) {
+
+            return recContains(target, root);
+
+        }
+
+        private boolean recContains(T target, BSTNode<T> node) {
+
+            if (node == null) { // BASE case, target node not found
+
+                return false;
+
+            } else if (comp.compare(target, node.getInfo()) < 0) {
+
+                // If the target is lesser than the info of the current node...
+                // RECURSIVE CASE, search the left subtree of the current node.
+                return recContains(target, node.getLeft());
+
+            } else if (comp.compare(target, node.getInfo()) > 0) {
+
+                // If the target is greater than the info of the current node...
+                // RECURSIVE CASE, search the right subtree of the current node.
+                return recContains(target, node.getRight());
+
+            } else { // BASE case, target node found!
+
+                return true;
+
+            }
+
+        }
+
+Code for recursive get():
+
+        public T get(T target) {
+
+            return recGet(target, root);
+
+        }
+
+        private T recGet(T target, BSTNode<T> node) {
+
+            if (node == null) { // BASE case, target node not found
+
+                return null;
+
+            } else if (comp.compare(target, node.getInfo()) < 0) {
+
+                // If the target is lesser than the info of the current node...
+                // RECURSIVE CASE, search the left subtree of the current node.
+                return recGet(target, node.getLeft());
+
+            } else if (comp.compare(target, node.getInfo()) > 0) {
+
+                // If the target is greater than the info of the current node...
+                // RECURSIVE CASE, search the right subtree of the current node.
+                return recGet(target, node.getRight());
+
+            } else { // BASE case, target node found!
+
+                return node.getInfo();
+
+            }
+
+        }
+
+---
+
+### The isEmpty() and isFull() operations!
+
+- We know if a BST is empty if the original reference, i.e. the root node, of any given tree is null. If the root is null, then the tree has not even been formed yet!
+
+- We know if a BST is full... well it is a collection of nodes, so it really can never be full. Just like other structures composed of nodes (LinkedList, LinkedStack, LinkedQueue, e.t.c ) thwew is no capacity limit on the number of nodes that can be part of a BST.
+
+Code for isEmpty() and isFull() methods:
+
+        public boolean isFull() {
+            return false;
+        }
+
+        public boolean isEmpty() {
+            return (root == null);
+        }
+
+---
+
+### The min() and max() operations!
+
+- These observer methods are explicitly part of the BSTInterface and are specific for BST implementations (in other words we did not see them when dealing with collections).
+
+- **Remember that a BST, even if it does not look like it, is an ordered structure**
+
+- In any correctly 
+
+---
