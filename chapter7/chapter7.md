@@ -79,10 +79,10 @@ Suppose the example tree we were given before:
 **A breadth-first traversal of this tree will visit the tree level by level, and print out the nodes on each level from left to right! A breadth-first traversal is also called a level order traversal.**
 
 So for the example tree, we will print the nodes on each level:
-- 0th level: A
-- 1st level: B, F, X
-- 2nd level: C, T, H, Q, Z
-- 3rd level: P
+- 0th level: **A**
+- 1st level: **B, F, X**
+- 2nd level: **C, T, H, Q, Z**
+- 3rd level: **P**
 
 **Overall a Breadth-First traversal would print: A, B, F, X, C, T, H, Q, Z, P**
 
@@ -98,14 +98,14 @@ ALGORITHM
 
 So for the example tree, we will print as such:
 
-- Printing path to leftmost node of original tree: A, B, C
-- Printing path to leftmost node of subtree of node T  (sibling to C) (since T is a single node, we just print it): T
+- Printing path to leftmost node of original tree: **A, B, C**
+- Printing path to leftmost node of subtree of node T  (sibling to C) (since T is a single node, we just print it): **T**
 - No sibling nodes left on this level, getting immeadiate parent...
-- Printing path to leftmost node of subtree of node F (sibling to B) (since F is a single node, we just print it): F
-- Printing path to leftmost node of subtree of node X (sibling to P): X, H, P
+- Printing path to leftmost node of subtree of node F (sibling to B) (since F is a single node, we just print it): **F**
+- Printing path to leftmost node of subtree of node X (sibling to P): **X, H, P**
 - Node P has no siblings, so we get the immeadiate parent...
-- Printing path to leftmost node of subtree of node Q (sibling of H) (Since Q is a single node, we just print it): Q
-- Printing path to leftmost node of subtree of node Z (sibling of H) (Since Z is a single node, we just print it): Z 
+- Printing path to leftmost node of subtree of node Q (sibling of H) (Since Q is a single node, we just print it): **Q**
+- Printing path to leftmost node of subtree of node Z (sibling of H) (Since Z is a single node, we just print it): **Z**
 
 - then we go back to root and see that there is nothing left to traverse.
 
@@ -160,7 +160,7 @@ Recursive:
             
             for(int i = 0; i < this.height(); i++){
 
-                levelOrder(root, i)
+                levelOrder(root, i);
 
             }
 
@@ -174,7 +174,7 @@ Recursive:
 
             if(level > 0){
                 levelOrder(node.getLeft(), level - 1);
-                levelOrder(node.getRight(), level - 1)
+                levelOrder(node.getRight(), level - 1);
             } else {
                 System.out.println(node.getInfo() + " ");
             }
@@ -235,5 +235,119 @@ Recursive:
 
         }
 
+---
 
+## Binary Search Trees
 
+Binary Search Trees are specialized binary trees that fulfill a certain property for any given node in the tree.
+
+**The Binary Search Property:**
+
+**For any given node in a BST...**
+- **Every node in the node's left subtree must have a key less than or equal to its own key.**
+- **Every node in the node's right subtree must have a key greater than its own key.**
+
+**This property is what separates a BST from a normal tree.**
+
+Below is a comparison between a traditional binary tree and a BST:
+
+![alt link](BinaryTreeEX.PNG "Title")
+
+![alt link](BST_EX.PNG "Title")
+
+For the BST, note that if you pick any node, the binary search property still holds!
+
+- If we look at the node with a value of C, the values in its left subtree (A and B) are all less than or equal to its own value. Furthermore, the values in its right subtree (just D) are greater than its own value.
+
+- We could do this for any node that has children! For child nodes, this property is meaningless since lead nodes do not have subtrees.
+
+- **However, for all non-leaf nodes the binary search property holds which is what matters!**
+
+---
+
+### Binary Tree Traversals
+
+Binary Tree traversals are basically specialized tree traversals that take advantage of the recursive structure of trees. 
+
+- 1 Tree can be composed of many subtrees!
+- Each tree and subtree is defined by its root, and that root's left and right subtrees!
+
+We can use recursion to print out the left subtree, root, and right subtree in different orders.
+
+3 Types of Traversals:
+
+- Preorder (Root, Left, Right)
+- Inorder (Left, Root, Right)
+- Postorder (Left, Right, Root)
+
+Each traversal is most intuitively understood using recursion!
+
+- For each traversal, the user will call a version of the method that has no parameters, but internally this no-parameter public method will call a private method that accepts a node. The initial call to this method will pass the root node!
+
+The traversals can be written in a complex manner or a more simplistic manner depending on how you define a base case.
+
+- Many people would conclude that a base case should occur when the passed node has no children. Because if the passed node has no children then you could just print the node and end recursion.
+- **However, with the approach above, what if the first node passed was null? Then how would you check that? Well you could add a null checking if statement before the main cases, but that's too much code!**
+
+- **Instead, our base cases will occur when the node passed is a null reference! Since our traversals will keep calling getLeft() and getRight() over and over, they will eventually all end up with null reference calls and which point the recursion will end!**
+
+---
+
+Code for the traversals:
+
+Preorder traversal:
+
+        protected void preOrder(){
+            preOrder(root);
+        }
+
+        private void preOrder(BSTNode<T> node){
+
+            if( node != null){
+
+                System.out.println(node + " ");
+                preOrder(node.getLeft());
+                preOrder(node.getRight());
+
+            }
+
+        }
+
+Inorder traversal:
+
+        protected void inOrder(){
+            inOrder(root);
+        }
+
+        private void inOrder(BSTNode<T> node){
+
+            if( node != null){
+
+                inOrder(node.getLeft());
+                System.out.println(node + " ");
+                inOrder(node.getRight());
+
+            }
+
+        }
+
+Postorder traversal:
+
+        protected void postOrder(){
+            postOrder(root);
+        }
+
+        private void postOrder(BSTNode<T> node){
+
+            if( node != null){
+
+                postOrder(node.getLeft());
+                postOrder(node.getRight());
+                System.out.println(node + " ");
+
+            }
+
+        }
+        
+
+---
